@@ -1,0 +1,688 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      window.FontAwesomeConfig = { autoReplaceSvg: 'nest' }
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <style>
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      .circuit-bg {
+        background: linear-gradient(
+            45deg,
+            #0a0a12 0%,
+            #1a0a1f 25%,
+            #0a1a12 50%,
+            #1f0a1a 75%,
+            #0a0a12 100%
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 0, 255, 0.03) 2px,
+            rgba(255, 0, 255, 0.03) 4px
+          ),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 255, 255, 0.02) 2px,
+            rgba(0, 255, 255, 0.02) 4px
+          );
+        background-size: 400% 400%, 20px 20px, 20px 20px;
+        animation: circuitShift 20s ease-in-out infinite;
+      }
+
+      @keyframes circuitShift {
+        0%,
+        100% {
+          background-position: 0% 50%, 0 0, 0 0;
+        }
+        25% {
+          background-position: 100% 30%, 5px 5px, -5px 5px;
+        }
+        50% {
+          background-position: 50% 100%, 10px 0, 0 10px;
+        }
+        75% {
+          background-position: 0% 70%, -5px -5px, 5px -5px;
+        }
+      }
+
+      .glass-ultra {
+        background: rgba(15, 15, 25, 0.15);
+        backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 0, 255, 0.1);
+      }
+
+      .glass-card {
+        background: rgba(15, 15, 25, 0.2);
+        backdrop-filter: blur(16px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          0 6px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 255, 255, 0.08);
+      }
+
+      .fuchsia-aura {
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.2),
+          0 0 40px rgba(255, 0, 255, 0.12), 0 0 60px rgba(255, 0, 255, 0.06),
+          inset 0 0 20px rgba(255, 0, 255, 0.05);
+        animation: fuchsiaBreath 4s ease-in-out infinite alternate;
+      }
+
+      .teal-aura {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2),
+          0 0 40px rgba(0, 255, 255, 0.12), 0 0 60px rgba(0, 255, 255, 0.06),
+          inset 0 0 20px rgba(0, 255, 255, 0.05);
+        animation: tealBreath 4.5s ease-in-out infinite alternate;
+      }
+
+      @keyframes fuchsiaBreath {
+        0% {
+          box-shadow: 0 0 15px rgba(255, 0, 255, 0.15),
+            0 0 30px rgba(255, 0, 255, 0.08), 0 0 45px rgba(255, 0, 255, 0.04);
+        }
+        100% {
+          box-shadow: 0 0 25px rgba(255, 0, 255, 0.25),
+            0 0 50px rgba(255, 0, 255, 0.16), 0 0 75px rgba(255, 0, 255, 0.08);
+        }
+      }
+
+      @keyframes tealBreath {
+        0% {
+          box-shadow: 0 0 15px rgba(0, 255, 255, 0.15),
+            0 0 30px rgba(0, 255, 255, 0.08), 0 0 45px rgba(0, 255, 255, 0.04);
+        }
+        100% {
+          box-shadow: 0 0 25px rgba(0, 255, 255, 0.25),
+            0 0 50px rgba(0, 255, 255, 0.16), 0 0 75px rgba(0, 255, 255, 0.08);
+        }
+      }
+
+      .floating-element {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(2deg);
+        }
+      }
+
+      .slide-in {
+        animation: slideIn 0.8s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .fade-in {
+        animation: fadeIn 1s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .glow-pulse {
+        animation: glowPulse 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes glowPulse {
+        0% {
+          box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+        100% {
+          box-shadow: 0 0 40px rgba(255, 0, 255, 0.6),
+            0 0 60px rgba(0, 255, 255, 0.2);
+        }
+      }
+
+      .tab-active {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 0, 255, 0.2),
+          rgba(0, 255, 255, 0.2)
+        );
+        border-color: rgba(255, 0, 255, 0.5);
+      }
+
+      .social-btn {
+        transition: all 0.3s ease;
+      }
+
+      .social-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 0, 255, 0.3);
+      }
+
+      .form-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .form-input:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 0, 255, 0.5);
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Syncopate', 'sans-serif'],
+            },
+            colors: {
+              'neon-pink': '#ff00ff',
+              'neon-blue': '#00ffff',
+              'dark-bg': '#0a0a12',
+              'darker-bg': '#050508',
+              'card-bg': 'rgba(20, 20, 35, 0.6)',
+            },
+          },
+        },
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+    />
+    <style>
+      body {
+        font-family: 'Inter', sans-serif !important;
+      }
+
+      /* Preserve Font Awesome icons */
+      .fa,
+      .fas,
+      .far,
+      .fal,
+      .fab {
+        font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+      }
+    </style>
+    <style>
+      .highlighted-section {
+        outline: 2px solid #3f20fb;
+        background-color: rgba(63, 32, 251, 0.1);
+      }
+
+      .edit-button {
+        position: absolute;
+        z-index: 1000;
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      html,
+      body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body
+    class="circuit-bg text-white antialiased overflow-x-hidden min-h-screen font-sans"
+  >
+    <!-- Background Elements -->
+    <div class="fixed inset-0 pointer-events-none">
+      <div
+        class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-pink/5 rounded-full blur-3xl floating-element"
+      ></div>
+      <div
+        class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-blue/5 rounded-full blur-3xl floating-element"
+        style="animation-delay: 2s"
+      ></div>
+      <div
+        class="absolute top-3/4 left-1/2 w-64 h-64 bg-neon-pink/3 rounded-full blur-2xl floating-element"
+        style="animation-delay: 4s"
+      ></div>
+    </div>
+
+    <!-- Main Container -->
+    <div
+      id="auth-container"
+      class="min-h-screen flex items-center justify-center p-4 relative z-10"
+    >
+      <!-- Back to Landing -->
+      <div class="absolute top-6 left-6">
+        <button
+          onclick="window.history.back()"
+          class="glass-card rounded-xl p-3 hover:border-neon-pink/50 transition-all duration-300"
+        >
+          <i
+            class="fa-solid fa-arrow-left text-gray-300 hover:text-neon-pink"
+          ></i>
+        </button>
+      </div>
+
+      <!-- Main Auth Card -->
+      <div class="w-full max-w-md">
+        <!-- Logo Section -->
+        <div id="logo-section" class="text-center mb-8 fade-in">
+          <div
+            class="w-16 h-16 bg-gradient-to-r from-neon-pink to-neon-blue rounded-2xl flex items-center justify-center mx-auto mb-4 fuchsia-aura"
+          >
+            <i class="fa-solid fa-music text-white text-2xl"></i>
+          </div>
+          <h1
+            class="text-3xl font-display font-bold bg-gradient-to-r from-neon-pink to-neon-blue bg-clip-text text-transparent"
+          >
+            LUFY
+          </h1>
+          <p class="text-gray-400 mt-2">The Future of Music Platforms</p>
+        </div>
+
+        <!-- Auth Form Card -->
+        <div
+          id="auth-form-card"
+          class="glass-ultra rounded-3xl p-8 fuchsia-aura slide-in"
+        >
+          <!-- Tab Switcher -->
+          <div id="tab-switcher" class="flex bg-white/5 rounded-2xl p-1 mb-8">
+            <button
+              id="signin-tab"
+              class="flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-300 tab-active"
+            >
+              Sign In
+            </button>
+            <button
+              id="signup-tab"
+              class="flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-300 text-gray-400 hover:text-white"
+            >
+              Sign Up
+            </button>
+          </div>
+
+          <!-- Sign In Form -->
+          <div id="signin-form" class="space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Email</label
+              >
+              <input
+                type="email"
+                placeholder="your@email.com"
+                class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Password</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 focus:outline-none pr-12"
+                />
+                <button
+                  class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-neon-pink"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-sm">
+              <label class="flex items-center text-gray-300">
+                <input type="checkbox" class="mr-2 rounded border-gray-600" />
+                Remember me
+              </label>
+              <button
+                class="text-neon-pink hover:text-neon-blue transition-colors"
+              >
+                Forgot password?
+              </button>
+            </div>
+
+            <button
+              class="w-full py-3 bg-gradient-to-r from-neon-pink to-neon-blue rounded-xl font-semibold text-white hover:scale-105 transition-transform shadow-2xl glow-pulse"
+            >
+              Sign In
+            </button>
+          </div>
+
+          <!-- Sign Up Form -->
+          <div id="signup-form" class="space-y-6 hidden">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2"
+                  >First Name</label
+                >
+                <input
+                  type="text"
+                  placeholder="John"
+                  class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2"
+                  >Last Name</label
+                >
+                <input
+                  type="text"
+                  placeholder="Doe"
+                  class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Artist Name</label
+              >
+              <input
+                type="text"
+                placeholder="Your stage name"
+                class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Email</label
+              >
+              <input
+                type="email"
+                placeholder="your@email.com"
+                class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Password</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 focus:outline-none pr-12"
+                />
+                <button
+                  class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-neon-pink"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Confirm Password</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 focus:outline-none pr-12"
+                />
+                <button
+                  class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-neon-pink"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="text-sm">
+              <label class="flex items-start text-gray-300">
+                <input
+                  type="checkbox"
+                  class="mr-2 mt-1 rounded border-gray-600"
+                />
+                <span
+                  >I agree to the
+                  <button class="text-neon-pink hover:text-neon-blue">
+                    Terms of Service
+                  </button>
+                  and
+                  <button class="text-neon-pink hover:text-neon-blue">
+                    Privacy Policy
+                  </button></span
+                >
+              </label>
+            </div>
+
+            <button
+              class="w-full py-3 bg-gradient-to-r from-neon-pink to-neon-blue rounded-xl font-semibold text-white hover:scale-105 transition-transform shadow-2xl glow-pulse"
+            >
+              Create Account
+            </button>
+          </div>
+
+          <!-- Divider -->
+          <div class="flex items-center my-8">
+            <div class="flex-1 border-t border-white/10"></div>
+            <span class="px-4 text-sm text-gray-400">or continue with</span>
+            <div class="flex-1 border-t border-white/10"></div>
+          </div>
+
+          <!-- Social Login -->
+          <div id="social-login" class="space-y-3">
+            <button
+              class="social-btn w-full flex items-center justify-center space-x-3 py-3 glass-card rounded-xl border border-white/10 hover:border-neon-pink/30 transition-all duration-300"
+            >
+              <i class="fa-brands fa-google text-xl"></i>
+              <span>Continue with Google</span>
+            </button>
+
+            <button
+              class="social-btn w-full flex items-center justify-center space-x-3 py-3 glass-card rounded-xl border border-white/10 hover:border-neon-blue/30 transition-all duration-300"
+            >
+              <i class="fa-brands fa-spotify text-xl"></i>
+              <span>Continue with Spotify</span>
+            </button>
+
+            <button
+              class="social-btn w-full flex items-center justify-center space-x-3 py-3 glass-card rounded-xl border border-white/10 hover:border-neon-pink/30 transition-all duration-300"
+            >
+              <i class="fa-brands fa-apple text-xl"></i>
+              <span>Continue with Apple</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div
+          id="additional-info"
+          class="text-center mt-8 space-y-4 fade-in"
+          style="animation-delay: 0.3s"
+        >
+          <div class="glass-card rounded-2xl p-6">
+            <h3
+              class="text-lg font-semibold mb-3 bg-gradient-to-r from-neon-pink to-neon-blue bg-clip-text text-transparent"
+            >
+              Join 10,000+ Artists
+            </h3>
+            <div class="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div class="text-2xl font-bold text-neon-pink">10K+</div>
+                <div class="text-xs text-gray-400">Artists</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-neon-blue">2M+</div>
+                <div class="text-xs text-gray-400">Fans</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-neon-pink">$5M+</div>
+                <div class="text-xs text-gray-400">Revenue</div>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-sm text-gray-400">
+            Need help?
+            <button
+              class="text-neon-pink hover:text-neon-blue transition-colors"
+            >
+              Contact Support
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Feature Pills -->
+    <div class="fixed top-1/4 right-8 hidden lg:block">
+      <div class="space-y-4">
+        <div
+          class="glass-card rounded-full px-4 py-2 floating-element teal-aura"
+          style="animation-delay: 1s"
+        >
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-music text-neon-blue text-sm"></i>
+            <span class="text-xs text-gray-300">Music Player</span>
+          </div>
+        </div>
+        <div
+          class="glass-card rounded-full px-4 py-2 floating-element fuchsia-aura"
+          style="animation-delay: 2s"
+        >
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-shopping-cart text-neon-pink text-sm"></i>
+            <span class="text-xs text-gray-300">Beat Store</span>
+          </div>
+        </div>
+        <div
+          class="glass-card rounded-full px-4 py-2 floating-element teal-aura"
+          style="animation-delay: 3s"
+        >
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-users text-neon-blue text-sm"></i>
+            <span class="text-xs text-gray-300">Fan Hub</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fixed bottom-1/4 left-8 hidden lg:block">
+      <div class="space-y-4">
+        <div
+          class="glass-card rounded-full px-4 py-2 floating-element fuchsia-aura"
+          style="animation-delay: 0.5s"
+        >
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-chart-line text-neon-pink text-sm"></i>
+            <span class="text-xs text-gray-300">Analytics</span>
+          </div>
+        </div>
+        <div
+          class="glass-card rounded-full px-4 py-2 floating-element teal-aura"
+          style="animation-delay: 1.5s"
+        >
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-tshirt text-neon-blue text-sm"></i>
+            <span class="text-xs text-gray-300">Merch Store</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tab switching functionality
+      const signinTab = document.getElementById('signin-tab')
+      const signupTab = document.getElementById('signup-tab')
+      const signinForm = document.getElementById('signin-form')
+      const signupForm = document.getElementById('signup-form')
+
+      signinTab.addEventListener('click', () => {
+        signinTab.classList.add('tab-active')
+        signupTab.classList.remove('tab-active')
+        signupTab.classList.add('text-gray-400')
+
+        signinForm.classList.remove('hidden')
+        signupForm.classList.add('hidden')
+      })
+
+      signupTab.addEventListener('click', () => {
+        signupTab.classList.add('tab-active')
+        signinTab.classList.remove('tab-active')
+        signinTab.classList.add('text-gray-400')
+
+        signupForm.classList.remove('hidden')
+        signinForm.classList.add('hidden')
+      })
+
+      // Password visibility toggle
+      document.querySelectorAll('.fa-eye').forEach((button) => {
+        button.addEventListener('click', () => {
+          const input = button.parentElement.querySelector('input')
+          if (input.type === 'password') {
+            input.type = 'text'
+            button.classList.remove('fa-eye')
+            button.classList.add('fa-eye-slash')
+          } else {
+            input.type = 'password'
+            button.classList.remove('fa-eye-slash')
+            button.classList.add('fa-eye')
+          }
+        })
+      })
+
+      // Form validation and enhanced interactions
+      document.querySelectorAll('.form-input').forEach((input) => {
+        input.addEventListener('focus', () => {
+          input.parentElement.classList.add('focused')
+        })
+
+        input.addEventListener('blur', () => {
+          input.parentElement.classList.remove('focused')
+        })
+      })
+
+      // Social button hover effects
+      document.querySelectorAll('.social-btn').forEach((button) => {
+        button.addEventListener('mouseenter', () => {
+          button.style.transform = 'translateY(-2px) scale(1.02)'
+        })
+
+        button.addEventListener('mouseleave', () => {
+          button.style.transform = 'translateY(0) scale(1)'
+        })
+      })
+    </script>
+  </body>
+</html>

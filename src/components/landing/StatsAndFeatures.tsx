@@ -76,17 +76,24 @@ const QuickFeatures: React.FC<QuickFeaturesProps> = ({ className }) => {
   ]
 
   return (
-    <div
-      className={`grid grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in ${
-        className || ''
-      }`}
-    >
-      {features.map((feature, index) => (
-        <GlassCard key={index} className="flex items-center space-x-3 p-4">
-          <IconBox icon={feature.icon} gradient={feature.gradient} size="sm" />
-          <span className="text-sm text-gray-300">{feature.label}</span>
-        </GlassCard>
-      ))}
+    <div className="absolute left-1/2 transform -translate-x-1/2">
+      <div className="flex justify-center gap-2 animate-fade-in px-4 overflow-x-auto">
+        {features.map((feature, index) => (
+          <GlassCard
+            key={index}
+            className="flex items-center space-x-2 px-3 py-3 min-w-0 flex-shrink-0"
+          >
+            <IconBox
+              icon={feature.icon}
+              gradient={feature.gradient}
+              size="sm"
+            />
+            <span className="text-xs sm:text-sm text-gray-300 whitespace-nowrap">
+              {feature.label}
+            </span>
+          </GlassCard>
+        ))}
+      </div>
     </div>
   )
 }

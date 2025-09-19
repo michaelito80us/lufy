@@ -7,7 +7,7 @@ interface AdminSidebarProps {
 
 const navItems = [
   { id: 'branding', icon: 'fa-palette', label: 'Branding' },
-  { id: 'pages', icon: 'fa-file-lines', label: 'Pages' },
+  { id: 'pages', icon: 'fa-file-lines', label: 'Site Layout' },
   { id: 'music', icon: 'fa-music', label: 'Music' },
   { id: 'beats', icon: 'fa-waveform-lines', label: 'Beats' },
   { id: 'merch', icon: 'fa-shirt', label: 'Merch' },
@@ -41,7 +41,7 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
                   className={`nav-item flex items-center px-4 py-3 rounded-xl transition-colors cursor-pointer w-full text-left ${
                     activeTab === item.id
                       ? 'glass-card fuchsia-aura text-white'
-                      : 'text-gray-400 hover:text-white glass-card hover:fuchsia-aura'
+                      : 'text-gray-400 hover:text-white glass-card hover-fuchsia-aura'
                   }`}
                 >
                   <i

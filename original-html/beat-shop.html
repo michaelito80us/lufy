@@ -1,0 +1,938 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      window.FontAwesomeConfig = { autoReplaceSvg: 'nest' }
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <style>
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      .circuit-bg {
+        background: linear-gradient(
+            45deg,
+            #0a0a12 0%,
+            #1a0a1f 25%,
+            #0a1a12 50%,
+            #1f0a1a 75%,
+            #0a0a12 100%
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 0, 255, 0.03) 2px,
+            rgba(255, 0, 255, 0.03) 4px
+          ),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 255, 255, 0.02) 2px,
+            rgba(0, 255, 255, 0.02) 4px
+          );
+        background-size: 400% 400%, 20px 20px, 20px 20px;
+        animation: circuitShift 20s ease-in-out infinite;
+        position: relative;
+      }
+
+      .circuit-bg::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at 20% 30%,
+            rgba(255, 0, 255, 0.1) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(0, 255, 255, 0.08) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 50% 20%,
+            rgba(255, 0, 255, 0.06) 0%,
+            transparent 35%
+          );
+        animation: circuitGlow 8s ease-in-out infinite alternate;
+      }
+
+      @keyframes circuitShift {
+        0%,
+        100% {
+          background-position: 0% 50%, 0 0, 0 0;
+        }
+        25% {
+          background-position: 100% 30%, 5px 5px, -5px 5px;
+        }
+        50% {
+          background-position: 50% 100%, 10px 0, 0 10px;
+        }
+        75% {
+          background-position: 0% 70%, -5px -5px, 5px -5px;
+        }
+      }
+
+      @keyframes circuitGlow {
+        0% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0.9;
+          transform: scale(1.02);
+        }
+      }
+
+      .glass-ultra {
+        background: rgba(15, 15, 25, 0.15);
+        backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 0, 255, 0.1);
+      }
+
+      .glass-card {
+        background: rgba(15, 15, 25, 0.2);
+        backdrop-filter: blur(16px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          0 6px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 255, 255, 0.08);
+      }
+
+      .fuchsia-aura {
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.2),
+          0 0 40px rgba(255, 0, 255, 0.12), 0 0 60px rgba(255, 0, 255, 0.06),
+          inset 0 0 20px rgba(255, 0, 255, 0.05);
+        animation: fuchsiaBreath 4s ease-in-out infinite alternate;
+      }
+
+      .teal-aura {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2),
+          0 0 40px rgba(0, 255, 255, 0.12), 0 0 60px rgba(0, 255, 255, 0.06),
+          inset 0 0 20px rgba(0, 255, 255, 0.05);
+        animation: tealBreath 4.5s ease-in-out infinite alternate;
+      }
+
+      @keyframes fuchsiaBreath {
+        0% {
+          box-shadow: 0 0 15px rgba(255, 0, 255, 0.15),
+            0 0 30px rgba(255, 0, 255, 0.08), 0 0 45px rgba(255, 0, 255, 0.04),
+            inset 0 0 15px rgba(255, 0, 255, 0.03);
+        }
+        100% {
+          box-shadow: 0 0 25px rgba(255, 0, 255, 0.25),
+            0 0 50px rgba(255, 0, 255, 0.16), 0 0 75px rgba(255, 0, 255, 0.08),
+            inset 0 0 25px rgba(255, 0, 255, 0.07);
+        }
+      }
+
+      @keyframes tealBreath {
+        0% {
+          box-shadow: 0 0 15px rgba(0, 255, 255, 0.15),
+            0 0 30px rgba(0, 255, 255, 0.08), 0 0 45px rgba(0, 255, 255, 0.04),
+            inset 0 0 15px rgba(0, 255, 255, 0.03);
+        }
+        100% {
+          box-shadow: 0 0 25px rgba(0, 255, 255, 0.25),
+            0 0 50px rgba(0, 255, 255, 0.16), 0 0 75px rgba(0, 255, 255, 0.08),
+            inset 0 0 25px rgba(0, 255, 255, 0.07);
+        }
+      }
+
+      .beat-waveform {
+        background: linear-gradient(
+          90deg,
+          rgba(255, 0, 255, 0.3) 0%,
+          rgba(0, 255, 255, 0.5) 25%,
+          rgba(255, 0, 255, 0.7) 50%,
+          rgba(0, 255, 255, 0.4) 75%,
+          rgba(255, 0, 255, 0.3) 100%
+        );
+        height: 60px;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        animation: waveformPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes waveformPulse {
+        0%,
+        100% {
+          opacity: 0.8;
+          transform: scaleY(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scaleY(1.1);
+        }
+      }
+
+      .price-tag {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 0, 255, 0.2),
+          rgba(0, 255, 255, 0.2)
+        );
+        border: 1px solid rgba(255, 0, 255, 0.3);
+      }
+
+      .upload-zone {
+        border: 2px dashed rgba(255, 0, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .upload-zone:hover {
+        border-color: rgba(255, 0, 255, 0.6);
+        background: rgba(255, 0, 255, 0.05);
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Syncopate', 'sans-serif'],
+            },
+            colors: {
+              'neon-pink': '#ff00ff',
+              'neon-blue': '#00ffff',
+              'dark-bg': '#0a0a12',
+              'darker-bg': '#050508',
+              'card-bg': 'rgba(20, 20, 35, 0.6)',
+            },
+          },
+        },
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+    />
+    <style>
+      body {
+        font-family: 'Inter', sans-serif !important;
+      }
+
+      /* Preserve Font Awesome icons */
+      .fa,
+      .fas,
+      .far,
+      .fal,
+      .fab {
+        font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+      }
+    </style>
+    <style>
+      .highlighted-section {
+        outline: 2px solid #3f20fb;
+        background-color: rgba(63, 32, 251, 0.1);
+      }
+
+      .edit-button {
+        position: absolute;
+        z-index: 1000;
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      html,
+      body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body
+    class="circuit-bg text-white antialiased overflow-x-hidden font-sans"
+    style="
+      padding: env(safe-area-inset-top) env(safe-area-inset-right)
+        env(safe-area-inset-bottom) env(safe-area-inset-left);
+    "
+  >
+    <!-- Left Sidebar Navigation -->
+    <aside
+      id="sidebar"
+      class="fixed top-0 left-0 bottom-0 w-64 glass-ultra fuchsia-aura z-30 hidden md:block"
+    >
+      <div class="h-full flex flex-col">
+        <div class="p-6 border-b border-white/10">
+          <div class="flex items-center justify-center">
+            <h1
+              class="text-2xl font-display font-bold bg-gradient-to-r from-neon-pink to-neon-blue bg-clip-text text-transparent"
+            >
+              LUFY
+            </h1>
+          </div>
+          <p class="text-xs text-center text-gray-400 mt-2">Artist Dashboard</p>
+        </div>
+
+        <nav class="flex-1 px-4 py-6">
+          <ul class="space-y-2">
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="branding"
+              >
+                <i class="fa-solid fa-palette w-5"></i>
+                <span class="ml-3">Branding</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="pages"
+              >
+                <i class="fa-solid fa-file-lines w-5"></i>
+                <span class="ml-3">Pages</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="music"
+              >
+                <i class="fa-solid fa-music w-5"></i>
+                <span class="ml-3">Music</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl glass-card fuchsia-aura cursor-pointer"
+                data-tab="beats"
+              >
+                <i class="fa-solid fa-waveform-lines text-neon-pink w-5"></i>
+                <span class="ml-3 font-medium">Beats</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="merch"
+              >
+                <i class="fa-solid fa-shirt w-5"></i>
+                <span class="ml-3">Merch</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="subscriptions"
+              >
+                <i class="fa-solid fa-crown w-5"></i>
+                <span class="ml-3">Subscriptions</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="shows"
+              >
+                <i class="fa-solid fa-calendar w-5"></i>
+                <span class="ml-3">Shows</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="analytics"
+              >
+                <i class="fa-solid fa-chart-line w-5"></i>
+                <span class="ml-3">Analytics</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="settings"
+              >
+                <i class="fa-solid fa-gear w-5"></i>
+                <span class="ml-3">Settings</span>
+              </span>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="p-4 border-t border-white/10">
+          <button
+            class="w-full py-3 px-4 bg-gradient-to-r from-neon-pink to-neon-blue rounded-xl font-medium fuchsia-aura"
+          >
+            <i class="fa-solid fa-rocket mr-2"></i>
+            Publish Site
+          </button>
+          <div class="flex items-center justify-center mt-2">
+            <div class="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+            <span class="text-xs text-gray-400">Live</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Bottom Tab Bar -->
+    <nav
+      id="mobile-nav"
+      class="fixed bottom-0 left-0 right-0 glass-ultra border-t border-white/10 z-30 md:hidden"
+      style="padding-bottom: env(safe-area-inset-bottom)"
+    >
+      <div class="flex justify-around py-2">
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-gray-400 hover:text-white"
+          data-tab="branding"
+        >
+          <i class="fa-solid fa-palette text-sm mb-1"></i>
+          <span class="text-xs">Brand</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-gray-400 hover:text-white"
+          data-tab="pages"
+        >
+          <i class="fa-solid fa-file-lines text-sm mb-1"></i>
+          <span class="text-xs">Pages</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-gray-400 hover:text-white"
+          data-tab="music"
+        >
+          <i class="fa-solid fa-music text-sm mb-1"></i>
+          <span class="text-xs">Music</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-neon-pink"
+          data-tab="beats"
+        >
+          <i class="fa-solid fa-waveform-lines text-sm mb-1"></i>
+          <span class="text-xs">Beats</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-gray-400 hover:text-white"
+          data-tab="settings"
+        >
+          <i class="fa-solid fa-gear text-sm mb-1"></i>
+          <span class="text-xs">More</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="md:pl-64 pb-20 md:pb-0 relative z-10">
+      <!-- Top Header -->
+      <header
+        id="header"
+        class="glass-ultra border-b border-white/10 px-4 md:px-6 py-4"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-lg md:text-xl font-semibold">Beat Store</h1>
+            <p class="text-xs md:text-sm text-gray-400">
+              Discover and purchase premium beats
+            </p>
+          </div>
+
+          <div class="flex items-center space-x-2 md:space-x-4">
+            <div class="glass-card px-3 py-2 rounded-lg">
+              <input
+                type="search"
+                placeholder="Search beats..."
+                class="bg-transparent text-sm w-32 md:w-48 outline-none text-white placeholder-gray-400"
+              />
+              <i class="fa-solid fa-search text-gray-400 ml-2"></i>
+            </div>
+            <div class="price-tag px-3 py-2 rounded-lg text-xs font-medium">
+              <i class="fa-solid fa-shopping-cart mr-1"></i>
+              <span class="hidden sm:inline">Cart: 3</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero Banner -->
+      <section
+        id="hero-banner"
+        class="relative h-[300px] md:h-[400px] overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-neon-pink/20 via-transparent to-neon-blue/20"
+        ></div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="text-center">
+            <h1
+              class="text-4xl md:text-6xl font-display font-bold bg-gradient-to-r from-neon-pink to-neon-blue bg-clip-text text-transparent mb-4"
+            >
+              BEAT STORE
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-6">
+              Premium beats from top producers worldwide
+            </p>
+            <div class="flex items-center justify-center space-x-6 text-sm">
+              <div class="flex items-center">
+                <i class="fa-solid fa-music text-neon-pink mr-2"></i>
+                <span>1,200+ Beats</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fa-solid fa-users text-neon-blue mr-2"></i>
+                <span>340 Producers</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fa-solid fa-download text-neon-pink mr-2"></i>
+                <span>50K+ Downloads</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filter Bar -->
+      <section
+        id="filter-bar"
+        class="px-4 md:px-6 py-4 glass-card border-b border-white/10"
+      >
+        <div class="flex flex-wrap items-center gap-3">
+          <button class="glass-card px-4 py-2 rounded-lg text-sm fuchsia-aura">
+            All Genres
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            Trap
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            Hip Hop
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            Electronic
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            R&amp;B
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            Pop
+          </button>
+          <div class="ml-auto flex items-center space-x-2">
+            <span class="text-sm text-gray-400">Sort by:</span>
+            <select
+              class="glass-card px-3 py-2 rounded-lg text-sm bg-transparent"
+            >
+              <option>Latest</option>
+              <option>Popular</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured & Popular Beats Grid -->
+      <section id="beats-grid" class="p-4 md:p-6">
+        <!-- Featured Section -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl md:text-2xl font-semibold flex items-center">
+              <i class="fa-solid fa-star text-neon-pink mr-3"></i>
+              Featured Beats
+            </h2>
+            <button
+              class="text-neon-blue hover:text-white transition-colors text-sm"
+            >
+              View All <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+          </div>
+
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
+            <!-- Featured Beat Card -->
+            <div
+              class="glass-card fuchsia-aura rounded-xl p-4 hover:scale-105 transition-all duration-300"
+            >
+              <div class="beat-waveform w-full h-20 rounded-lg mb-4"></div>
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="font-semibold text-lg mb-1">Neon Dreams</h3>
+                  <p class="text-sm text-gray-400">By Producer X</p>
+                </div>
+                <div class="price-tag px-3 py-1 rounded-lg font-bold">$45</div>
+              </div>
+              <div
+                class="flex items-center justify-between text-xs text-gray-400 mb-4"
+              >
+                <span>130 BPM • C Minor</span>
+                <span class="flex items-center">
+                  <i class="fa-solid fa-download mr-1"></i>234
+                </span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button
+                  class="flex-1 glass-card px-3 py-2 rounded-lg text-sm hover:teal-aura transition-all"
+                >
+                  <i class="fa-solid fa-play mr-2"></i>Preview
+                </button>
+                <button
+                  class="glass-card px-3 py-2 rounded-lg hover:fuchsia-aura transition-all"
+                >
+                  <i class="fa-solid fa-shopping-cart"></i>
+                </button>
+                <button
+                  class="glass-card px-3 py-2 rounded-lg hover:teal-aura transition-all"
+                >
+                  <i class="fa-solid fa-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Featured Beat Card 2 -->
+            <div
+              class="glass-card teal-aura rounded-xl p-4 hover:scale-105 transition-all duration-300"
+            >
+              <div class="beat-waveform w-full h-20 rounded-lg mb-4"></div>
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="font-semibold text-lg mb-1">Street Legends</h3>
+                  <p class="text-sm text-gray-400">By Beat King</p>
+                </div>
+                <div class="price-tag px-3 py-1 rounded-lg font-bold">$50</div>
+              </div>
+              <div
+                class="flex items-center justify-between text-xs text-gray-400 mb-4"
+              >
+                <span>140 BPM • G Minor</span>
+                <span class="flex items-center">
+                  <i class="fa-solid fa-download mr-1"></i>189
+                </span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button
+                  class="flex-1 glass-card px-3 py-2 rounded-lg text-sm hover:teal-aura transition-all"
+                >
+                  <i class="fa-solid fa-play mr-2"></i>Preview
+                </button>
+                <button
+                  class="glass-card px-3 py-2 rounded-lg hover:fuchsia-aura transition-all"
+                >
+                  <i class="fa-solid fa-shopping-cart"></i>
+                </button>
+                <button
+                  class="glass-card px-3 py-2 rounded-lg hover:teal-aura transition-all"
+                >
+                  <i class="fa-solid fa-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Featured Beat Card 3 -->
+            <div
+              class="glass-card fuchsia-aura rounded-xl p-4 hover:scale-105 transition-all duration-300"
+            >
+              <div class="beat-waveform w-full h-20 rounded-lg mb-4"></div>
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="font-semibold text-lg mb-1">Cosmic Flow</h3>
+                  <p class="text-sm text-gray-400">By SoundWave</p>
+                </div>
+                <div class="price-tag px-3 py-1 rounded-lg font-bold">$35</div>
+              </div>
+              <div
+                class="flex items-center justify-between text-xs text-gray-400 mb-4"
+              >
+                <span>125 BPM • A Major</span>
+                <span class="flex items-center">
+                  <i class="fa-solid fa-download mr-1"></i>156
+                </span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button
+                  class="flex-1 glass-card px-3 py-2 rounded-lg text-sm hover:teal-aura transition-all"
+                >
+                  <i class="fa-solid fa-play mr-2"></i>Preview
+                </button>
+                <button
+                  class="glass-card px-3 py-2 rounded-lg hover:fuchsia-aura transition-all"
+                >
+                  <i class="fa-solid fa-shopping-cart"></i>
+                </button>
+                <button
+                  class="glass-card px-3 py-2 rounded-lg hover:teal-aura transition-all"
+                >
+                  <i class="fa-solid fa-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Featured Beat Card 4 -->
+            <div
+              class="glass-card teal-aura rounded-xl p-4 hover:scale-105 transition-all duration-300"
+            >
+              <div class="beat-waveform w-full h-20 rounded-lg mb-4"></div>
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="font-semibold text-lg mb-1">Future Bass</h3>
+                  <p class="text-sm text-gray-400">By ElectroMind</p>
+                </div>
+                <div class="price-tag px-3 py-1 rounded-lg font-bold">$40</div>
+              </div>
+              <div
+                class="flex items-center justify-between text-xs text-gray-400 mb-4"
+              >
+                <span>128 BPM • E Minor</span>
+                <span class="flex items-center">
+                  <i class="fa-solid fa-download mr-1"></i>203
+                </span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button
+                  class="flex-1 glass-card px-3 py-2 rounded-lg text-sm hover:teal-aura transition-all"
+                >
+                  <i class="fa-solid fa-play mr-2"></i>Preview
+                </button>
+                <button
+                  class="glass-card px-3 py-2 rounded-lg hover:fuchsia-aura transition-all"
+                >
+                  <i class="fa-solid fa-shopping-cart"></i>
+                </button>
+                <button
+                  class="glass-card px-3 py-2 rounded-lg hover:teal-aura transition-all"
+                >
+                  <i class="fa-solid fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Producers & Stats -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Popular This Week -->
+          <div class="lg:col-span-2">
+            <div class="glass-card teal-aura rounded-xl p-6">
+              <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-semibold flex items-center">
+                  <i class="fa-solid fa-fire text-neon-pink mr-3"></i>
+                  Popular This Week
+                </h2>
+                <div class="text-center">
+                  <button
+                    class="text-neon-blue hover:text-white transition-colors text-sm"
+                  >
+                    View All
+                  </button>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <!-- Popular Beat Item -->
+                <div
+                  class="glass-card rounded-lg p-4 hover:fuchsia-aura transition-all"
+                >
+                  <div class="flex items-center space-x-4">
+                    <div class="text-neon-pink font-bold text-lg w-6">#1</div>
+                    <div
+                      class="beat-waveform w-16 h-12 rounded-lg flex-shrink-0"
+                    ></div>
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-medium truncate">Dark Trap Vibes</h3>
+                      <p class="text-sm text-gray-400">
+                        By TrapMaster • 140 BPM
+                      </p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                      <div
+                        class="price-tag px-3 py-1 rounded-lg text-sm font-medium"
+                      >
+                        $45
+                      </div>
+                      <div class="text-green-400 text-sm">
+                        <i class="fa-solid fa-play mr-1"></i>
+                        2.3K
+                      </div>
+                      <button class="text-neon-blue hover:text-white">
+                        <i class="fa-solid fa-shopping-cart"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Popular Beat Item -->
+                <div
+                  class="glass-card rounded-lg p-4 hover:fuchsia-aura transition-all"
+                >
+                  <div class="flex items-center space-x-4">
+                    <div
+                      class="beat-waveform w-16 h-12 rounded-lg flex-shrink-0"
+                    ></div>
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-medium truncate">Future Bass Drop</h3>
+                      <p class="text-sm text-gray-400">
+                        128 BPM • G Major • Electronic
+                      </p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                      <div
+                        class="price-tag px-3 py-1 rounded-lg text-sm font-medium"
+                      >
+                        $40
+                      </div>
+                      <div class="text-green-400 text-sm">
+                        <i class="fa-solid fa-download mr-1"></i>
+                        15
+                      </div>
+                      <button class="text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-ellipsis-h"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Popular Beat Item -->
+                <div
+                  class="glass-card rounded-lg p-4 hover:fuchsia-aura transition-all"
+                >
+                  <div class="flex items-center space-x-4">
+                    <div
+                      class="beat-waveform w-16 h-12 rounded-lg flex-shrink-0"
+                    ></div>
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-medium truncate">Melodic Hip Hop</h3>
+                      <p class="text-sm text-gray-400">
+                        90 BPM • A Minor • Hip Hop
+                      </p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                      <div
+                        class="price-tag px-3 py-1 rounded-lg text-sm font-medium"
+                      >
+                        $30
+                      </div>
+                      <div class="text-green-400 text-sm">
+                        <i class="fa-solid fa-download mr-1"></i>
+                        8
+                      </div>
+                      <button class="text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-ellipsis-h"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mt-6">
+                <button
+                  class="text-neon-blue hover:text-white transition-colors text-sm"
+                >
+                  View All Beats <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mini Beat Store -->
+          <div class="glass-card fuchsia-aura rounded-xl p-4 md:p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-lg font-semibold flex items-center">
+                <i class="fa-solid fa-store text-neon-pink mr-3"></i>
+                Beat Store
+              </h2>
+              <div class="text-center">
+                <button
+                  class="text-neon-pink hover:text-white transition-colors text-sm font-medium"
+                >
+                  View All
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Featured Beat -->
+              <div
+                class="glass-card rounded-lg p-4 hover:teal-aura transition-all"
+              >
+                <div class="beat-waveform w-full h-8 rounded mb-3"></div>
+                <h3 class="font-medium text-sm mb-1">Neon Dreams</h3>
+                <p class="text-xs text-gray-400 mb-2">
+                  By Producer X • 130 BPM
+                </p>
+                <div class="flex items-center justify-between">
+                  <div class="price-tag px-2 py-1 rounded text-xs font-medium">
+                    $45
+                  </div>
+                  <button class="text-neon-blue text-xs hover:text-white">
+                    <i class="fa-solid fa-play mr-1"></i>Preview
+                  </button>
+                </div>
+              </div>
+
+              <!-- Popular Beat -->
+              <div
+                class="glass-card rounded-lg p-4 hover:teal-aura transition-all"
+              >
+                <div class="beat-waveform w-full h-8 rounded mb-3"></div>
+                <h3 class="font-medium text-sm mb-1">Street Legends</h3>
+                <p class="text-xs text-gray-400 mb-2">By Beat King • 140 BPM</p>
+                <div class="flex items-center justify-between">
+                  <div class="price-tag px-2 py-1 rounded text-xs font-medium">
+                    $50
+                  </div>
+                  <button class="text-neon-blue text-xs hover:text-white">
+                    <i class="fa-solid fa-play mr-1"></i>Preview
+                  </button>
+                </div>
+              </div>
+
+              <!-- Trending Beat -->
+              <div
+                class="glass-card rounded-lg p-4 hover:teal-aura transition-all"
+              >
+                <div class="beat-waveform w-full h-8 rounded mb-3"></div>
+                <h3 class="font-medium text-sm mb-1">Cosmic Flow</h3>
+                <p class="text-xs text-gray-400 mb-2">By SoundWave • 125 BPM</p>
+                <div class="flex items-center justify-between">
+                  <div class="price-tag px-2 py-1 rounded text-xs font-medium">
+                    $35
+                  </div>
+                  <button class="text-neon-blue text-xs hover:text-white">
+                    <i class="fa-solid fa-play mr-1"></i>Preview
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Store Stats -->
+            <div class="mt-6 pt-4 border-t border-white/10">
+              <div class="grid grid-cols-2 gap-4 text-center">
+                <div>
+                  <div class="text-lg font-semibold text-neon-blue">1.2K</div>
+                  <div class="text-xs text-gray-400">Total Beats</div>
+                </div>
+                <div>
+                  <div class="text-lg font-semibold text-neon-pink">340</div>
+                  <div class="text-xs text-gray-400">Producers</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

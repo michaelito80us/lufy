@@ -1,0 +1,975 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      window.FontAwesomeConfig = { autoReplaceSvg: 'nest' }
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <style>
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      .circuit-bg {
+        background: linear-gradient(
+            45deg,
+            #0a0a12 0%,
+            #1a0a1f 25%,
+            #0a1a12 50%,
+            #1f0a1a 75%,
+            #0a0a12 100%
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 0, 255, 0.03) 2px,
+            rgba(255, 0, 255, 0.03) 4px
+          ),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 255, 255, 0.02) 2px,
+            rgba(0, 255, 255, 0.02) 4px
+          );
+        background-size: 400% 400%, 20px 20px, 20px 20px;
+        animation: circuitShift 20s ease-in-out infinite;
+        position: relative;
+      }
+
+      .circuit-bg::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at 20% 30%,
+            rgba(255, 0, 255, 0.1) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(0, 255, 255, 0.08) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 50% 20%,
+            rgba(255, 0, 255, 0.06) 0%,
+            transparent 35%
+          );
+        animation: circuitGlow 8s ease-in-out infinite alternate;
+      }
+
+      @keyframes circuitShift {
+        0%,
+        100% {
+          background-position: 0% 50%, 0 0, 0 0;
+        }
+        25% {
+          background-position: 100% 30%, 5px 5px, -5px 5px;
+        }
+        50% {
+          background-position: 50% 100%, 10px 0, 0 10px;
+        }
+        75% {
+          background-position: 0% 70%, -5px -5px, 5px -5px;
+        }
+      }
+
+      @keyframes circuitGlow {
+        0% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0.9;
+          transform: scale(1.02);
+        }
+      }
+
+      .glass-ultra {
+        background: rgba(15, 15, 25, 0.15);
+        backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 0, 255, 0.1);
+      }
+
+      .glass-card {
+        background: rgba(15, 15, 25, 0.2);
+        backdrop-filter: blur(16px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          0 6px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 255, 255, 0.08);
+      }
+
+      .fuchsia-aura {
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.2),
+          0 0 40px rgba(255, 0, 255, 0.12), 0 0 60px rgba(255, 0, 255, 0.06),
+          inset 0 0 20px rgba(255, 0, 255, 0.05);
+        animation: fuchsiaBreath 4s ease-in-out infinite alternate;
+      }
+
+      .teal-aura {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2),
+          0 0 40px rgba(0, 255, 255, 0.12), 0 0 60px rgba(0, 255, 255, 0.06),
+          inset 0 0 20px rgba(0, 255, 255, 0.05);
+        animation: tealBreath 4.5s ease-in-out infinite alternate;
+      }
+
+      @keyframes fuchsiaBreath {
+        0% {
+          box-shadow: 0 0 15px rgba(255, 0, 255, 0.15),
+            0 0 30px rgba(255, 0, 255, 0.08), 0 0 45px rgba(255, 0, 255, 0.04),
+            inset 0 0 15px rgba(255, 0, 255, 0.03);
+        }
+        100% {
+          box-shadow: 0 0 25px rgba(255, 0, 255, 0.25),
+            0 0 50px rgba(255, 0, 255, 0.16), 0 0 75px rgba(255, 0, 255, 0.08),
+            inset 0 0 25px rgba(255, 0, 255, 0.07);
+        }
+      }
+
+      @keyframes tealBreath {
+        0% {
+          box-shadow: 0 0 15px rgba(0, 255, 255, 0.15),
+            0 0 30px rgba(0, 255, 255, 0.08), 0 0 45px rgba(0, 255, 255, 0.04),
+            inset 0 0 15px rgba(0, 255, 255, 0.03);
+        }
+        100% {
+          box-shadow: 0 0 25px rgba(0, 255, 255, 0.25),
+            0 0 50px rgba(0, 255, 255, 0.16), 0 0 75px rgba(0, 255, 255, 0.08),
+            inset 0 0 25px rgba(0, 255, 255, 0.07);
+        }
+      }
+
+      .merch-item {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 0, 255, 0.1),
+          rgba(0, 255, 255, 0.1)
+        );
+        border: 1px solid rgba(255, 0, 255, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .merch-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(255, 0, 255, 0.3),
+          0 0 40px rgba(0, 255, 255, 0.2);
+      }
+
+      .merch-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      .merch-item:hover::before {
+        left: 100%;
+      }
+
+      .price-badge {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 0, 255, 0.8),
+          rgba(0, 255, 255, 0.8)
+        );
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .size-selector {
+        background: rgba(15, 15, 25, 0.3);
+        border: 1px solid rgba(255, 0, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .size-selector:hover,
+      .size-selector.active {
+        background: rgba(255, 0, 255, 0.2);
+        border-color: rgba(255, 0, 255, 0.8);
+        color: #ff00ff;
+      }
+
+      .stock-indicator {
+        background: linear-gradient(
+          90deg,
+          rgba(255, 0, 255, 0.2),
+          rgba(0, 255, 255, 0.2)
+        );
+        border-radius: 20px;
+        padding: 2px 8px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Syncopate', 'sans-serif'],
+            },
+            colors: {
+              'neon-pink': '#ff00ff',
+              'neon-blue': '#00ffff',
+              'dark-bg': '#0a0a12',
+              'darker-bg': '#050508',
+              'card-bg': 'rgba(20, 20, 35, 0.6)',
+            },
+          },
+        },
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+    />
+    <style>
+      body {
+        font-family: 'Inter', sans-serif !important;
+      }
+
+      /* Preserve Font Awesome icons */
+      .fa,
+      .fas,
+      .far,
+      .fal,
+      .fab {
+        font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+      }
+    </style>
+    <style>
+      .highlighted-section {
+        outline: 2px solid #3f20fb;
+        background-color: rgba(63, 32, 251, 0.1);
+      }
+
+      .edit-button {
+        position: absolute;
+        z-index: 1000;
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      html,
+      body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body
+    class="circuit-bg text-white antialiased overflow-x-hidden font-sans"
+    style="
+      padding: env(safe-area-inset-top) env(safe-area-inset-right)
+        env(safe-area-inset-bottom) env(safe-area-inset-left);
+    "
+  >
+    <!-- Left Sidebar Navigation -->
+    <aside
+      id="sidebar"
+      class="fixed top-0 left-0 bottom-0 w-64 glass-ultra fuchsia-aura z-30 hidden md:block"
+    >
+      <div class="h-full flex flex-col">
+        <div class="p-6 border-b border-white/10">
+          <div class="flex items-center justify-center">
+            <h1
+              class="text-2xl font-display font-bold bg-gradient-to-r from-neon-pink to-neon-blue bg-clip-text text-transparent"
+            >
+              LUFY
+            </h1>
+          </div>
+          <p class="text-xs text-center text-gray-400 mt-2">Artist Dashboard</p>
+        </div>
+
+        <nav class="flex-1 px-4 py-6">
+          <ul class="space-y-2">
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="branding"
+              >
+                <i class="fa-solid fa-palette w-5"></i>
+                <span class="ml-3">Branding</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="pages"
+              >
+                <i class="fa-solid fa-file-lines w-5"></i>
+                <span class="ml-3">Pages</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="music"
+              >
+                <i class="fa-solid fa-music w-5"></i>
+                <span class="ml-3">Music</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="beats"
+              >
+                <i class="fa-solid fa-waveform-lines w-5"></i>
+                <span class="ml-3">Beats</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl glass-card fuchsia-aura cursor-pointer"
+                data-tab="merch"
+              >
+                <i class="fa-solid fa-shirt text-neon-pink w-5"></i>
+                <span class="ml-3 font-medium">Merch</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="subscriptions"
+              >
+                <i class="fa-solid fa-crown w-5"></i>
+                <span class="ml-3">Subscriptions</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="shows"
+              >
+                <i class="fa-solid fa-calendar w-5"></i>
+                <span class="ml-3">Shows</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="analytics"
+              >
+                <i class="fa-solid fa-chart-line w-5"></i>
+                <span class="ml-3">Analytics</span>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-400 hover:text-white transition-colors cursor-pointer glass-card hover:fuchsia-aura"
+                data-tab="settings"
+              >
+                <i class="fa-solid fa-gear w-5"></i>
+                <span class="ml-3">Settings</span>
+              </span>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="p-4 border-t border-white/10">
+          <button
+            class="w-full py-3 px-4 bg-gradient-to-r from-neon-pink to-neon-blue rounded-xl font-medium fuchsia-aura"
+          >
+            <i class="fa-solid fa-rocket mr-2"></i>
+            Publish Site
+          </button>
+          <div class="flex items-center justify-center mt-2">
+            <div class="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+            <span class="text-xs text-gray-400">Live</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Bottom Tab Bar -->
+    <nav
+      id="mobile-nav"
+      class="fixed bottom-0 left-0 right-0 glass-ultra border-t border-white/10 z-30 md:hidden"
+      style="padding-bottom: env(safe-area-inset-bottom)"
+    >
+      <div class="flex justify-around py-2">
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-gray-400 hover:text-white"
+          data-tab="branding"
+        >
+          <i class="fa-solid fa-palette text-sm mb-1"></i>
+          <span class="text-xs">Brand</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-gray-400 hover:text-white"
+          data-tab="pages"
+        >
+          <i class="fa-solid fa-file-lines text-sm mb-1"></i>
+          <span class="text-xs">Pages</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-gray-400 hover:text-white"
+          data-tab="music"
+        >
+          <i class="fa-solid fa-music text-sm mb-1"></i>
+          <span class="text-xs">Music</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-gray-400 hover:text-white"
+          data-tab="beats"
+        >
+          <i class="fa-solid fa-waveform-lines text-sm mb-1"></i>
+          <span class="text-xs">Beats</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-4 text-neon-pink"
+          data-tab="merch"
+        >
+          <i class="fa-solid fa-shirt text-sm mb-1"></i>
+          <span class="text-xs">Merch</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="md:pl-64 pb-20 md:pb-0 relative z-10">
+      <!-- Top Header -->
+      <header
+        id="header"
+        class="glass-ultra border-b border-white/10 px-4 md:px-6 py-4"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-lg md:text-xl font-semibold">Merchandise Store</h1>
+            <p class="text-xs md:text-sm text-gray-400">
+              Exclusive LUFY branded merchandise and apparel
+            </p>
+          </div>
+
+          <div class="flex items-center space-x-2 md:space-x-4">
+            <div class="glass-card px-3 py-2 rounded-lg">
+              <input
+                type="search"
+                placeholder="Search products..."
+                class="bg-transparent text-sm w-32 md:w-48 outline-none text-white placeholder-gray-400"
+              />
+              <i class="fa-solid fa-search text-gray-400 ml-2"></i>
+            </div>
+            <div class="price-badge px-3 py-2 rounded-lg text-xs font-medium">
+              <i class="fa-solid fa-shopping-bag mr-1"></i>
+              <span class="hidden sm:inline">Cart: 2</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero Banner -->
+      <section
+        id="hero-banner"
+        class="relative h-[300px] md:h-[400px] overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-neon-pink/20 via-transparent to-neon-blue/20"
+        ></div>
+        <img
+          class="absolute inset-0 w-full h-full object-cover opacity-30"
+          src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9e0035154-666c94a9ea9b4260cd30.png"
+          alt="futuristic fashion model wearing neon clothing, holographic fabric textures, cyberpunk style apparel, dark background with neon lighting"
+        />
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="text-center">
+            <h1
+              class="text-4xl md:text-6xl font-display font-bold bg-gradient-to-r from-neon-pink to-neon-blue bg-clip-text text-transparent mb-4"
+            >
+              LUFY MERCH
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-6">
+              Exclusive limited edition collection
+            </p>
+            <div class="flex items-center justify-center space-x-6 text-sm">
+              <div class="flex items-center">
+                <i class="fa-solid fa-shirt text-neon-pink mr-2"></i>
+                <span>Limited Edition</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fa-solid fa-shipping-fast text-neon-blue mr-2"></i>
+                <span>Free Shipping</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fa-solid fa-star text-neon-pink mr-2"></i>
+                <span>Premium Quality</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Categories Filter -->
+      <section
+        id="categories-bar"
+        class="px-4 md:px-6 py-4 glass-card border-b border-white/10"
+      >
+        <div class="flex flex-wrap items-center gap-3">
+          <button class="glass-card px-4 py-2 rounded-lg text-sm fuchsia-aura">
+            All Items
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            T-Shirts
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            Hoodies
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            Accessories
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            Vinyl &amp; CDs
+          </button>
+          <button
+            class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+          >
+            Collectibles
+          </button>
+          <div class="ml-auto flex items-center space-x-2">
+            <span class="text-sm text-gray-400">Sort by:</span>
+            <select
+              class="glass-card px-3 py-2 rounded-lg text-sm bg-transparent"
+            >
+              <option>Featured</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- E-commerce Management Tools -->
+      <section id="ecommerce-tools" class="px-4 md:px-6 py-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+          <div class="glass-card p-4 rounded-xl fuchsia-aura">
+            <div class="flex items-center justify-between mb-2">
+              <i class="fa-solid fa-plus text-neon-pink"></i>
+              <span class="text-xs text-gray-400">Quick Action</span>
+            </div>
+            <h3 class="font-medium mb-1">Add Product</h3>
+            <p class="text-xs text-gray-400">Create new merchandise</p>
+          </div>
+
+          <div class="glass-card p-4 rounded-xl teal-aura">
+            <div class="flex items-center justify-between mb-2">
+              <i class="fa-solid fa-boxes text-neon-blue"></i>
+              <span class="text-xs text-gray-400">Inventory</span>
+            </div>
+            <h3 class="font-medium mb-1">42 Items</h3>
+            <p class="text-xs text-gray-400">In stock</p>
+          </div>
+
+          <div class="glass-card p-4 rounded-xl fuchsia-aura">
+            <div class="flex items-center justify-between mb-2">
+              <i class="fa-solid fa-shopping-cart text-neon-pink"></i>
+              <span class="text-xs text-gray-400">Orders</span>
+            </div>
+            <h3 class="font-medium mb-1">23 Pending</h3>
+            <p class="text-xs text-gray-400">Need processing</p>
+          </div>
+
+          <div class="glass-card p-4 rounded-xl teal-aura">
+            <div class="flex items-center justify-between mb-2">
+              <i class="fa-solid fa-dollar-sign text-neon-blue"></i>
+              <span class="text-xs text-gray-400">Revenue</span>
+            </div>
+            <h3 class="font-medium mb-1">$2,847</h3>
+            <p class="text-xs text-gray-400">This month</p>
+          </div>
+        </div>
+
+        <!-- Product Management Table -->
+        <div class="glass-card rounded-xl p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold">Product Management</h2>
+            <div class="flex items-center space-x-3">
+              <button
+                class="glass-card px-4 py-2 rounded-lg text-sm hover:fuchsia-aura"
+              >
+                <i class="fa-solid fa-filter mr-2"></i>Filter
+              </button>
+              <button
+                class="bg-gradient-to-r from-neon-pink to-neon-blue px-4 py-2 rounded-lg text-sm font-medium"
+              >
+                <i class="fa-solid fa-plus mr-2"></i>Add Product
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-white/10">
+                  <th
+                    class="text-left py-3 px-2 text-sm font-medium text-gray-400"
+                  >
+                    Product
+                  </th>
+                  <th
+                    class="text-left py-3 px-2 text-sm font-medium text-gray-400"
+                  >
+                    SKU
+                  </th>
+                  <th
+                    class="text-left py-3 px-2 text-sm font-medium text-gray-400"
+                  >
+                    Stock
+                  </th>
+                  <th
+                    class="text-left py-3 px-2 text-sm font-medium text-gray-400"
+                  >
+                    Price
+                  </th>
+                  <th
+                    class="text-left py-3 px-2 text-sm font-medium text-gray-400"
+                  >
+                    Status
+                  </th>
+                  <th
+                    class="text-left py-3 px-2 text-sm font-medium text-gray-400"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5">
+                <tr class="hover:bg-white/5">
+                  <td class="py-3 px-2">
+                    <div class="flex items-center">
+                      <img
+                        class="w-10 h-10 rounded-lg object-cover mr-3"
+                        src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9e0035154-666c94a9ea9b4260cd30.png"
+                        alt="product"
+                      />
+                      <div>
+                        <div class="font-medium">LUFY Neon Hoodie</div>
+                        <div class="text-xs text-gray-400">Apparel</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3 px-2 text-sm">LF-HOO-001</td>
+                  <td class="py-3 px-2 text-sm">24</td>
+                  <td class="py-3 px-2 text-sm font-medium">$89.99</td>
+                  <td class="py-3 px-2">
+                    <span
+                      class="px-2 py-1 rounded-full text-xs bg-green-500/20 text-green-400"
+                      >Active</span
+                    >
+                  </td>
+                  <td class="py-3 px-2">
+                    <div class="flex items-center space-x-2">
+                      <button class="text-gray-400 hover:text-neon-blue">
+                        <i class="fa-solid fa-edit text-sm"></i>
+                      </button>
+                      <button class="text-gray-400 hover:text-neon-pink">
+                        <i class="fa-solid fa-trash text-sm"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-white/5">
+                  <td class="py-3 px-2">
+                    <div class="flex items-center">
+                      <img
+                        class="w-10 h-10 rounded-lg object-cover mr-3"
+                        src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9e0035154-666c94a9ea9b4260cd30.png"
+                        alt="product"
+                      />
+                      <div>
+                        <div class="font-medium">Cyber Tee</div>
+                        <div class="text-xs text-gray-400">T-Shirt</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3 px-2 text-sm">LF-TEE-002</td>
+                  <td class="py-3 px-2 text-sm text-red-400">2</td>
+                  <td class="py-3 px-2 text-sm font-medium">$34.99</td>
+                  <td class="py-3 px-2">
+                    <span
+                      class="px-2 py-1 rounded-full text-xs bg-yellow-500/20 text-yellow-400"
+                      >Low Stock</span
+                    >
+                  </td>
+                  <td class="py-3 px-2">
+                    <div class="flex items-center space-x-2">
+                      <button class="text-gray-400 hover:text-neon-blue">
+                        <i class="fa-solid fa-edit text-sm"></i>
+                      </button>
+                      <button class="text-gray-400 hover:text-neon-pink">
+                        <i class="fa-solid fa-trash text-sm"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Orders Management -->
+      <section id="orders-section" class="px-4 md:px-6 py-6">
+        <div class="glass-card rounded-xl p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold">Recent Orders</h2>
+            <button class="text-neon-blue hover:text-neon-pink text-sm">
+              View All Orders
+            </button>
+          </div>
+
+          <div class="space-y-4">
+            <div class="glass-card p-4 rounded-lg border border-white/10">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="w-2 h-2 bg-neon-pink rounded-full mr-3"></div>
+                  <div>
+                    <div class="font-medium">#ORD-001</div>
+                    <div class="text-xs text-gray-400">
+                      Sarah Chen • 2 items
+                    </div>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div class="font-medium">$124.98</div>
+                  <div class="text-xs text-gray-400">2 hours ago</div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span
+                    class="px-2 py-1 rounded-full text-xs bg-yellow-500/20 text-yellow-400"
+                    >Processing</span
+                  >
+                  <button
+                    class="glass-card px-3 py-1 rounded text-xs hover:fuchsia-aura"
+                  >
+                    View
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card p-4 rounded-lg border border-white/10">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="w-2 h-2 bg-neon-blue rounded-full mr-3"></div>
+                  <div>
+                    <div class="font-medium">#ORD-002</div>
+                    <div class="text-xs text-gray-400">
+                      Mike Torres • 1 item
+                    </div>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div class="font-medium">$89.99</div>
+                  <div class="text-xs text-gray-400">5 hours ago</div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span
+                    class="px-2 py-1 rounded-full text-xs bg-green-500/20 text-green-400"
+                    >Shipped</span
+                  >
+                  <button
+                    class="glass-card px-3 py-1 rounded text-xs hover:teal-aura"
+                  >
+                    View
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Merchandise Grid -->
+      <section id="merch-grid" class="px-4 md:px-6 py-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <img
+                class="w-10 h-10 rounded-lg object-cover mr-3"
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9e0035154-666c94a9ea9b4260cd30.png"
+                alt="product"
+              />
+              <div>
+                <div class="font-medium">LUFY Neon Hoodie</div>
+                <div class="text-xs text-gray-400">Apparel</div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-400">Limited Edition</div>
+            <div class="text-2xl font-semibold">$89.99</div>
+            <div class="flex items-center space-x-2">
+              <span
+                class="px-2 py-1 rounded-full text-xs bg-green-500/20 text-green-400"
+                >Active</span
+              >
+              <button class="text-gray-400 hover:text-neon-pink">
+                <i class="fa-solid fa-cart-plus text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <img
+                class="w-10 h-10 rounded-lg object-cover mr-3"
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9e0035154-666c94a9ea9b4260cd30.png"
+                alt="product"
+              />
+              <div>
+                <div class="font-medium">Cyber Tee</div>
+                <div class="text-xs text-gray-400">T-Shirt</div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-400">Limited Edition</div>
+            <div class="text-2xl font-semibold">$34.99</div>
+            <div class="flex items-center space-x-2">
+              <span
+                class="px-2 py-1 rounded-full text-xs bg-yellow-500/20 text-yellow-400"
+                >Low Stock</span
+              >
+              <button class="text-gray-400 hover:text-neon-pink">
+                <i class="fa-solid fa-cart-plus text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <img
+                class="w-10 h-10 rounded-lg object-cover mr-3"
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9e0035154-666c94a9ea9b4260cd30.png"
+                alt="product"
+              />
+              <div>
+                <div class="font-medium">LUFY Neon Hoodie</div>
+                <div class="text-xs text-gray-400">Apparel</div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-400">Limited Edition</div>
+            <div class="text-2xl font-semibold">$89.99</div>
+            <div class="flex items-center space-x-2">
+              <span
+                class="px-2 py-1 rounded-full text-xs bg-green-500/20 text-green-400"
+                >Active</span
+              >
+              <button class="text-gray-400 hover:text-neon-pink">
+                <i class="fa-solid fa-cart-plus text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <img
+                class="w-10 h-10 rounded-lg object-cover mr-3"
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9e0035154-666c94a9ea9b4260cd30.png"
+                alt="product"
+              />
+              <div>
+                <div class="font-medium">Cyber Tee</div>
+                <div class="text-xs text-gray-400">T-Shirt</div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-400">Limited Edition</div>
+            <div class="text-2xl font-semibold">$34.99</div>
+            <div class="flex items-center space-x-2">
+              <span
+                class="px-2 py-1 rounded-full text-xs bg-yellow-500/20 text-yellow-400"
+                >Low Stock</span
+              >
+              <button class="text-gray-400 hover:text-neon-pink">
+                <i class="fa-solid fa-cart-plus text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <img
+                class="w-10 h-10 rounded-lg object-cover mr-3"
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9e0035154-666c94a9ea9b4260cd30.png"
+                alt="product"
+              />
+              <div>
+                <div class="font-medium">LUFY Neon Hoodie</div>
+                <div class="text-xs text-gray-400">Apparel</div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-400">Limited Edition</div>
+            <div class="text-2xl font-semibold">$89.99</div>
+            <div class="flex items-center space-x-2">
+              <span
+                class="px-2 py-1 rounded-full text-xs bg-green-500/20 text-green-400"
+                >Active</span
+              >
+              <button class="text-gray-400 hover:text-neon-pink">
+                <i class="fa-solid fa-cart-plus text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <img
+                class="w-10 h-10 rounded-lg object-cover mr-3"
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9e0035154-666c94a9ea9b4260cd30.png"
+                alt="product"
+              />
+              <div>
+                <div class="font-medium">Cyber Tee</div>
+                <div class="text-xs text-gray-400">T-Shirt</div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-400">Limited Edition</div>
+            <div class="text-2xl font-semibold">$34.99</div>
+            <div class="flex items-center space-x-2">
+              <span
+                class="px-2 py-1 rounded-full text-xs bg-yellow-500/20 text-yellow-400"
+                >Low Stock</span
+              >
+              <button class="text-gray-400 hover:text-neon-pink">
+                <i class="fa-solid fa-cart-plus text-sm"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -36,6 +36,7 @@ const CTA: React.FC<CTAProps> = ({ className }) => {
             onChange={(e) => setEmail(e.target.value)}
             className="px-6 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-neon-pink transition-colors min-w-[300px]"
             required
+            suppressHydrationWarning
           />
           <Button
             type="submit"

@@ -3,6 +3,8 @@
 import React from 'react'
 import { Button } from '@/components/ui/Button'
 import { IconBox } from '@/components/ui/IconBox'
+import { NavLink } from './NavLink'
+import Link from 'next/link'
 
 export interface HeaderProps {
   className?: string
@@ -29,9 +31,11 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           <NavLink href="#features">Features</NavLink>
           <NavLink href="#pricing">Pricing</NavLink>
           <NavLink href="#demo">Demo</NavLink>
-          <Button variant="ghost" size="md">
-            Sign In
-          </Button>
+          <Link href="/auth/login">
+            <button className="px-6 py-2 bg-gradient-to-r from-neon-pink/20 to-neon-blue/20 border border-white/20 rounded-xl text-white hover:border-neon-pink/50 transition-all">
+              Sign In
+            </button>
+          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -40,23 +44,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         </button>
       </div>
     </header>
-  )
-}
-
-// Navigation Link Component
-interface NavLinkProps {
-  href: string
-  children: React.ReactNode
-}
-
-const NavLink: React.FC<NavLinkProps> = ({ href, children }) => {
-  return (
-    <a
-      href={href}
-      className="text-gray-300 hover:text-neon-pink transition-colors cursor-pointer"
-    >
-      {children}
-    </a>
   )
 }
 

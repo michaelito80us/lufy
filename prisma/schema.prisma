@@ -1,0 +1,294 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for both artists and subscribers
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  emailVerified Boolean @default(false)
+  username  String?  @unique
+  name      String?
+  image     String?  // Better Auth uses 'image' instead of 'avatar'
+  role      UserRole @default(SUBSCRIBER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Artist profile (only if role is ARTIST)
+  artistProfile Artist?
+
+  // Subscriber relationships
+  subscriptions Subscription[] @relation("UserSubscriptions")
+  
+  // Sessions for better-auth
+  sessions Session[]
+  accounts Account[]
+
+  // Purchase relations
+  beatPurchases BeatSale[]   @relation("BeatBuyer")
+  merchOrders   MerchOrder[] @relation("MerchBuyer")
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  accountId         String   // provider account id
+  providerId        String   // provider name (google, github, etc.)
+  accessToken       String?  @db.Text
+  refreshToken      String?  @db.Text
+  idToken           String?  @db.Text
+  accessTokenExpiresAt DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope             String?
+  password          String?  // for email/password auth
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+  @@map("verifications")
+}
+
+// Artist profile with subscription tier
+model Artist {
+  id          String      @id @default(cuid())
+  userId      String      @unique
+  stageName   String
+  bio         String?
+  website     String?
+  socialLinks Json?       // Store social media links as JSON
+  tier        ArtistTier  @default(BASIC)
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Branding
+  brandColors Json?       // Primary, secondary colors
+  logo        String?
+  bannerImage String?
+
+  // Subscription settings for fans
+  subscriptionPrice Decimal? @db.Decimal(10, 2)
+  subscriptionActive Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Content
+  tracks       Track[]
+  beats        Beat[]
+  merchandise  Merchandise[]
+  shows        Show[]
+  
+  // Fan subscriptions
+  subscriptions Subscription[] @relation("ArtistSubscriptions")
+
+  @@map("artists")
+}
+
+// Music tracks
+model Track {
+  id          String      @id @default(cuid())
+  artistId    String
+  title       String
+  description String?
+  audioUrl    String
+  coverArt    String?
+  duration    Int?        // in seconds
+  genre       String?
+  isExclusive Boolean     @default(false) // Only for subscribers
+  isPublic    Boolean     @default(true)
+  playCount   Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@map("tracks")
+}
+
+// Beat store
+model Beat {
+  id          String     @id @default(cuid())
+  artistId    String
+  title       String
+  description String?
+  audioUrl    String     // Preview URL
+  fullAudioUrl String?   // Full version after purchase
+  coverArt    String?
+  bpm         Int?
+  key         String?
+  genre       String?
+  price       Decimal    @db.Decimal(10, 2)
+  isExclusive Boolean    @default(false)
+  tags        String[]   // Array of tags
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  sales  BeatSale[]
+
+  @@map("beats")
+}
+
+model BeatSale {
+  id        String   @id @default(cuid())
+  beatId    String
+  buyerId   String
+  price     Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+
+  beat  Beat @relation(fields: [beatId], references: [id], onDelete: Cascade)
+  buyer User @relation("BeatBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
+
+  @@map("beat_sales")
+}
+
+// Merchandise
+model Merchandise {
+  id          String    @id @default(cuid())
+  artistId    String
+  name        String
+  description String?
+  price       Decimal   @db.Decimal(10, 2)
+  images      String[]  // Array of image URLs
+  category    String    // t-shirt, hoodie, poster, etc.
+  sizes       String[]  // Available sizes
+  colors      String[]  // Available colors
+  inventory   Int       @default(0)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  orders MerchOrder[]
+
+  @@map("merchandise")
+}
+
+model MerchOrder {
+  id           String      @id @default(cuid())
+  merchId      String
+  buyerId      String
+  quantity     Int
+  size         String?
+  color        String?
+  totalPrice   Decimal     @db.Decimal(10, 2)
+  status       OrderStatus @default(PENDING)
+  shippingInfo Json?       // Address, tracking, etc.
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  merchandise Merchandise @relation(fields: [merchId], references: [id], onDelete: Cascade)
+  buyer       User        @relation("MerchBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
+
+  @@map("merch_orders")
+}
+
+// Shows and events
+model Show {
+  id          String    @id @default(cuid())
+  artistId    String
+  title       String
+  description String?
+  venue       String
+  address     String
+  city        String
+  country     String
+  date        DateTime
+  doors       DateTime? // Door opening time
+  ticketPrice Decimal?  @db.Decimal(10, 2)
+  ticketUrl   String?   // External ticket link
+  isExclusive Boolean   @default(false) // Only for subscribers
+  capacity    Int?
+  soldOut     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@map("shows")
+}
+
+// Fan subscriptions to artists
+model Subscription {
+  id        String           @id @default(cuid())
+  userId    String           // The subscriber
+  artistId  String           // The artist being subscribed to
+  status    SubscriptionStatus @default(ACTIVE)
+  startDate DateTime         @default(now())
+  endDate   DateTime?
+  price     Decimal          @db.Decimal(10, 2)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  user   User   @relation("UserSubscriptions", fields: [userId], references: [id], onDelete: Cascade)
+  artist Artist @relation("ArtistSubscriptions", fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, artistId])
+  @@map("subscriptions")
+}
+
+// Enums
+enum UserRole {
+  ARTIST
+  SUBSCRIBER
+  ADMIN
+}
+
+enum ArtistTier {
+  BASIC     // Limited features
+  PRO       // More storage, analytics
+  PREMIUM   // Full features, priority support
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAUSED
+}
