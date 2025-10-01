@@ -26,7 +26,7 @@ const CTA: React.FC<CTAProps> = ({ className }) => {
       className={`glass-ultra border-t border-white/10 p-6 ${className || ''}`}
     >
       <div className="max-w-7xl mx-auto text-center">
-        <p className="text-gray-400 mb-4">
+        <p className="text-sm sm:text-base text-gray-400 mb-4">
           Ready to transform your music career?
         </p>
         <form

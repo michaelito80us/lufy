@@ -70,8 +70,8 @@ export async function POST(request: NextRequest) {
         status: 'ACTIVE',
         startDate: new Date(),
         // Set expiry to 1 month from now
-        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        amount: artist.subscriptionPrice,
+        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        price: artist.subscriptionPrice || 0,
       },
       include: {
         artist: {

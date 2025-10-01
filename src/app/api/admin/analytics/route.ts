@@ -61,18 +61,16 @@ export async function GET(request: NextRequest) {
         }),
       ])
 
-    // Get tracks with play and like counts
+    // Get tracks with play counts
     const tracks = await prisma.track.findMany({
       where: { artistId: artist.id },
       select: {
         id: true,
-        plays: true,
-        likes: true,
+        playCount: true,
       },
     })
 
-    const totalPlays = tracks.reduce((sum, track) => sum + track.plays, 0)
-    const totalLikes = tracks.reduce((sum, track) => sum + track.likes, 0)
+    const totalPlays = tracks.reduce((sum, track) => sum + track.playCount, 0)
 
     // Calculate monthly revenue from active subscriptions
     const activeSubscriptionsWithAmount = await prisma.subscription.findMany({
@@ -81,12 +79,12 @@ export async function GET(request: NextRequest) {
         status: 'ACTIVE',
       },
       select: {
-        amount: true,
+        price: true,
       },
     })
 
     const monthlyRevenue = activeSubscriptionsWithAmount.reduce(
-      (sum, sub) => sum + parseFloat(sub.amount.toString()),
+      (sum, sub) => sum + parseFloat(sub.price.toString()),
       0
     )
 
@@ -104,14 +102,13 @@ export async function GET(request: NextRequest) {
     const topTracks = await prisma.track.findMany({
       where: { artistId: artist.id },
       orderBy: {
-        plays: 'desc',
+        playCount: 'desc',
       },
       take: 10,
       select: {
         id: true,
         title: true,
-        plays: true,
-        likes: true,
+        playCount: true,
         coverArt: true,
         createdAt: true,
       },
@@ -142,7 +139,7 @@ export async function GET(request: NextRequest) {
 
     // Get revenue breakdown by subscription tier (if applicable)
     const revenueBreakdown = await prisma.subscription.groupBy({
-      by: ['amount'],
+      by: ['price'],
       where: {
         artistId: artist.id,
         status: 'ACTIVE',
@@ -151,7 +148,7 @@ export async function GET(request: NextRequest) {
         id: true,
       },
       _sum: {
-        amount: true,
+        price: true,
       },
     })
 
@@ -177,10 +174,6 @@ export async function GET(request: NextRequest) {
     // Calculate engagement metrics
     const avgPlaysPerTrack =
       totalTracks > 0 ? Math.round(totalPlays / totalTracks) : 0
-    const avgLikesPerTrack =
-      totalTracks > 0 ? Math.round(totalLikes / totalTracks) : 0
-    const engagementRate =
-      totalPlays > 0 ? ((totalLikes / totalPlays) * 100).toFixed(2) : '0'
 
     // Get recent activity
     const recentActivity = await prisma.track.findMany({
@@ -198,8 +191,7 @@ export async function GET(request: NextRequest) {
         id: true,
         title: true,
         createdAt: true,
-        plays: true,
-        likes: true,
+        playCount: true,
       },
     })
 
@@ -207,14 +199,11 @@ export async function GET(request: NextRequest) {
       // Overview metrics
       totalTracks,
       totalPlays,
-      totalLikes,
       totalSubscribers: activeSubscribers,
       monthlyRevenue: Math.round(monthlyRevenue * 100) / 100,
 
       // Engagement metrics
       avgPlaysPerTrack,
-      avgLikesPerTrack,
-      engagementRate: parseFloat(engagementRate),
 
       // Time series data
       recentPlays,
@@ -225,9 +214,9 @@ export async function GET(request: NextRequest) {
 
       // Revenue data
       revenueBreakdown: revenueBreakdown.map((item) => ({
-        tier: `$${item.amount}/month`,
+        tier: `$${item.price}/month`,
         subscribers: item._count.id,
-        revenue: parseFloat(item._sum.amount?.toString() || '0'),
+        revenue: parseFloat(item._sum.price?.toString() || '0'),
       })),
 
       // Geographic data

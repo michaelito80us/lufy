@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
       artistId: artist.id,
     }
 
-    if (status && ['ACTIVE', 'INACTIVE', 'CANCELLED'].includes(status)) {
+    if (status && ['ACTIVE', 'PAUSED', 'CANCELLED'].includes(status)) {
       where.status = status
     }
 
@@ -102,7 +102,7 @@ export async function PATCH(request: NextRequest) {
 
     const updateSchema = z.object({
       subscriptionIds: z.array(z.string()),
-      status: z.enum(['ACTIVE', 'INACTIVE', 'CANCELLED']),
+      status: z.enum(['ACTIVE', 'PAUSED', 'CANCELLED']),
       reason: z.string().optional(),
     })
 

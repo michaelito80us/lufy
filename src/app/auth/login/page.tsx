@@ -48,11 +48,13 @@ export default function LoginPage() {
           <div className="text-center mb-8">
             <GlassCard className="glass-card rounded-xl p-3 hover:border-neon-pink/50 transition-all duration-300 inline-block mb-6">
               <div className="w-16 h-16 bg-gradient-to-r from-neon-pink to-neon-blue rounded-2xl flex items-center justify-center mx-auto fuchsia-aura">
-                <i className="fas fa-music text-2xl"></i>
+                <i className="fas fa-music text-xl sm:text-2xl"></i>
               </div>
             </GlassCard>
-            <h1 className="text-3xl font-bold mb-2">Welcome to Lufy</h1>
-            <p className="text-gray-400">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">
+              Welcome to Lufy
+            </h1>
+            <p className="text-sm sm:text-base text-gray-400">
               Sign in to access your artist dashboard
             </p>
           </div>
@@ -66,7 +68,7 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-center mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-center mb-6">
                 Sign in to continue
               </h2>
 
@@ -93,7 +95,7 @@ export default function LoginPage() {
           {/* Footer */}
           <div className="mt-8 text-center">
             <GlassCard className="glass-card rounded-2xl p-6">
-              <p className="text-gray-400 text-sm mb-4">
+              <p className="text-gray-400 text-xs sm:text-sm mb-4">
                 Join the revolution in music creation and distribution
               </p>
               <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-500">

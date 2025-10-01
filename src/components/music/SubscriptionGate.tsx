@@ -32,8 +32,8 @@ interface SubscriptionGateProps {
 
 interface Subscription {
   id: string
-  status: 'ACTIVE' | 'INACTIVE' | 'CANCELLED'
-  expiresAt: string
+  status: 'ACTIVE' | 'PAUSED' | 'CANCELLED'
+  endDate: string
 }
 
 const tierColors = {

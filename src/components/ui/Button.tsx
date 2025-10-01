@@ -37,7 +37,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {
             'bg-white/10 text-white hover:bg-white/20 border border-white/20':
               variant === 'default',
-            'bg-gradient-to-r from-neon-pink to-neon-blue text-white hover:shadow-lg hover:shadow-neon-pink/30 fuchsia-aura':
+            'bg-gradient-to-r from-neon-pink to-neon-blue text-white hover:shadow-lg hover:shadow-neon-pink/30 fuchsia-aura relative overflow-hidden':
               variant === 'primary',
             'bg-destructive text-destructive-foreground hover:bg-destructive/90':
               variant === 'destructive',
@@ -61,8 +61,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        {icon && <span className="mr-2">{icon}</span>}
-        {children}
+        {variant === 'primary' && (
+          <div className="absolute inset-0 bg-black/20 rounded-xl"></div>
+        )}
+        <div className="relative z-10 flex items-center">
+          {icon && <span className="mr-2">{icon}</span>}
+          {children}
+        </div>
       </button>
     )
   }

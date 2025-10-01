@@ -180,7 +180,8 @@ export async function POST(request: NextRequest) {
         subscriptionActive: validatedData.subscriptionPrice
           ? validatedData.subscriptionPrice > 0
           : false,
-        socialLinks: Object.keys(socialLinks).length > 0 ? socialLinks : null,
+        socialLinks:
+          Object.keys(socialLinks).length > 0 ? socialLinks : undefined,
         isActive: true,
       },
       select: {

@@ -15,6 +15,8 @@
 
   --animate-circuit-shift: circuitShift 20s ease-in-out infinite;
   --animate-float: float 6s ease-in-out infinite;
+  --animate-float-optimized: floatOptimized 6s ease-in-out infinite;
+  --animate-float-bg: floatBackground 8s ease-in-out infinite;
   --animate-fade-in: fadeIn 1s ease-out;
   --animate-glow-pulse: glowPulse 2s ease-in-out infinite alternate;
   --animate-fuchsia-breath: fuchsiaBreath 4s ease-in-out infinite alternate;
@@ -173,14 +175,35 @@
   }
 }
 
+@keyframes floatOptimized {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -20px, 0) rotate(2deg);
+  }
+}
+
+@keyframes floatBackground {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(-10px, -15px, 0) rotate(1deg);
+  }
+  66% {
+    transform: translate3d(10px, -25px, 0) rotate(-1deg);
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -299,6 +322,55 @@ body {
 
 .animate-slideIn {
   animation: slideIn 0.6s ease-out;
+}
+
+/* Animation control utilities */
+.animation-paused {
+  animation-play-state: paused !important;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Optimized float animation with hardware acceleration */
+.animate-float-optimized {
+  animation: var(--animate-float-optimized);
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.animate-float-bg {
+  animation: var(--animate-float-bg);
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Disable infinite animations on mobile for better performance */
+@media (max-width: 767px) {
+  /* Only disable infinite/looping animations */
+  .animate-float,
+  .animate-float-bg,
+  .animate-float-optimized,
+  .fuchsia-aura,
+  .teal-aura {
+    animation: none !important;
+  }
+
+  /* Keep entrance animations but make them faster */
+  .animate-fade-in {
+    animation-duration: 0.3s !important;
+  }
 }
 
 body {

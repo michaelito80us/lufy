@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { GlassCard } from '@/components/ui/GlassCard'
+import { BackgroundFloat } from '@/components/ui/SmartAnimation'
 
 export interface ProductPreviewProps {
   className?: string
@@ -10,28 +11,32 @@ export interface ProductPreviewProps {
 const ProductPreview: React.FC<ProductPreviewProps> = ({ className }) => {
   return (
     <div
-      className={`flex-1 flex items-center justify-center p-6 lg:p-12 relative ${
+      className={`flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 relative overflow-hidden ${
         className || ''
       }`}
     >
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-radial from-neon-pink/10 via-transparent to-neon-blue/10 opacity-30"></div>
-      <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-neon-pink/5 rounded-full blur-3xl animate-float"></div>
-      <div
-        className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-neon-blue/5 rounded-full blur-3xl animate-float"
-        style={{ animationDelay: '2s' }}
-      ></div>
+      <BackgroundFloat
+        className="absolute top-1/4 right-1/4 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 bg-neon-pink/5 rounded-full blur-3xl"
+        delay={0}
+      >
+        <div />
+      </BackgroundFloat>
+      <BackgroundFloat
+        className="absolute bottom-1/4 left-1/4 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 bg-neon-blue/5 rounded-full blur-3xl"
+        delay={2}
+      >
+        <div />
+      </BackgroundFloat>
 
       {/* Main Preview Container */}
-      <div
-        className="relative w-full max-w-2xl animate-fade-in"
-        style={{ animationDelay: '0.3s' }}
-      >
+      <div className="relative w-full max-w-2xl">
         {/* Device Frame */}
         <div
           className="relative transform-gpu"
           style={{
-            transform: 'perspective(1200px) rotateY(-8deg) rotateX(2deg)',
+            transform: 'perspective(800px) rotateY(-4deg) rotateX(1deg)',
           }}
         >
           {/* Screen Content */}
@@ -53,45 +58,45 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({ className }) => {
 
           {/* Floating UI Elements */}
           <FloatingElement
-            className="-top-6 -right-6"
+            className="-top-3 -right-3 sm:-top-6 sm:-right-6"
             animationDelay="1s"
             aura="teal"
           >
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full animate-pulse"></div>
               <span className="text-xs text-gray-300">Live</span>
             </div>
           </FloatingElement>
 
           <FloatingElement
-            className="-bottom-6 -left-6"
+            className="-bottom-3 -left-3 sm:-bottom-6 sm:-left-6"
             animationDelay="0.5s"
             aura="fuchsia"
           >
-            <div className="flex items-center space-x-2">
-              <i className="fa-solid fa-heart text-neon-pink text-sm"></i>
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <i className="fa-solid fa-heart text-neon-pink text-xs sm:text-sm"></i>
               <span className="text-xs text-gray-300">1.2k fans</span>
             </div>
           </FloatingElement>
         </div>
 
         {/* Feature Callouts */}
-        <div className="absolute -left-8 top-1/3 hidden lg:block">
+        <div className="absolute -left-2 sm:-left-4 lg:-left-8 top-1/3">
           <FeatureCallout
             title="Interactive Player"
             animationDelay="2s"
             aura="fuchsia"
           >
-            <div className="w-20 h-1 bg-gradient-to-r from-neon-pink to-neon-blue rounded-full"></div>
+            <div className="w-12 sm:w-16 lg:w-20 h-1 bg-gradient-to-r from-neon-pink to-neon-blue rounded-full"></div>
           </FeatureCallout>
         </div>
 
-        <div className="absolute -right-8 top-2/3 hidden lg:block">
+        <div className="absolute -right-2 sm:-right-4 lg:-right-8 top-2/3">
           <FeatureCallout title="Beat Store" animationDelay="1.5s" aura="teal">
             <div className="flex space-x-1">
-              <div className="w-2 h-2 bg-neon-blue rounded-full"></div>
-              <div className="w-2 h-2 bg-neon-pink rounded-full"></div>
-              <div className="w-2 h-2 bg-neon-blue rounded-full"></div>
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-neon-blue rounded-full"></div>
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-neon-pink rounded-full"></div>
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-neon-blue rounded-full"></div>
             </div>
           </FeatureCallout>
         </div>
@@ -115,7 +120,7 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
 }) => {
   return (
     <GlassCard
-      className={`absolute p-4 animate-float ${
+      className={`absolute p-2 sm:p-4 animate-float ${
         aura === 'fuchsia' ? 'fuchsia-aura' : 'teal-aura'
       } ${className || ''}`}
       style={animationDelay ? { animationDelay } : undefined}
@@ -140,7 +145,7 @@ const FeatureCallout: React.FC<FeatureCalloutProps> = ({
 }) => {
   return (
     <GlassCard
-      className={`p-3 animate-float ${
+      className={`p-2 sm:p-3 animate-float ${
         aura === 'fuchsia' ? 'fuchsia-aura' : 'teal-aura'
       }`}
       style={animationDelay ? { animationDelay } : undefined}

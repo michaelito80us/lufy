@@ -29,9 +29,10 @@ export async function GET(request: NextRequest) {
         userId: session.user.id,
         artistId: artistId,
         status: 'ACTIVE',
-        expiresAt: {
-          gt: new Date(), // Not expired
-        },
+        OR: [
+          { endDate: null }, // No end date (ongoing)
+          { endDate: { gt: new Date() } }, // Not expired
+        ],
       },
       include: {
         artist: {

@@ -28,19 +28,15 @@ const StatsRow: React.FC<StatsRowProps> = ({ className }) => {
   ]
 
   return (
-    <div
-      className={`grid grid-cols-3 gap-6 mb-12 animate-fade-in ${
-        className || ''
-      }`}
-    >
+    <div className={`grid grid-cols-3 gap-3 sm:gap-6 mb-12 ${className || ''}`}>
       {stats.map((stat, index) => (
         <div key={index} className="text-center">
           <div
-            className={`text-2xl lg:text-3xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent`}
+            className={`text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent`}
           >
             {stat.value}
           </div>
-          <div className="text-sm text-gray-400">{stat.label}</div>
+          <div className="text-xs sm:text-sm text-gray-400">{stat.label}</div>
         </div>
       ))}
     </div>
@@ -76,23 +72,26 @@ const QuickFeatures: React.FC<QuickFeaturesProps> = ({ className }) => {
   ]
 
   return (
-    <div className="absolute left-1/2 transform -translate-x-1/2">
-      <div className="flex justify-center gap-2 animate-fade-in px-4 overflow-x-auto">
-        {features.map((feature, index) => (
-          <GlassCard
-            key={index}
-            className="flex items-center space-x-2 px-3 py-3 min-w-0 flex-shrink-0"
-          >
-            <IconBox
-              icon={feature.icon}
-              gradient={feature.gradient}
-              size="sm"
-            />
-            <span className="text-xs sm:text-sm text-gray-300 whitespace-nowrap">
-              {feature.label}
-            </span>
-          </GlassCard>
-        ))}
+    <div className="flex justify-center mt-6 w-full">
+      <div className="w-full max-w-full">
+        {/* Mobile: 2x2 Grid, Desktop: Horizontal row */}
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:justify-center sm:gap-2 px-2 sm:px-4">
+          {features.map((feature, index) => (
+            <GlassCard
+              key={index}
+              className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-2 sm:py-3 min-w-0 flex-shrink-0 justify-center sm:justify-start"
+            >
+              <IconBox
+                icon={feature.icon}
+                gradient={feature.gradient}
+                size="sm"
+              />
+              <span className="text-xs text-gray-300 whitespace-nowrap">
+                {feature.label}
+              </span>
+            </GlassCard>
+          ))}
+        </div>
       </div>
     </div>
   )

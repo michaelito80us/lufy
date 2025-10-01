@@ -21,7 +21,7 @@ const updateTrackSchema = z.object({
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -31,7 +31,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const trackId = params.id
+    const { id: trackId } = await params
 
     const track = await prisma.track.findFirst({
       where: {
@@ -108,7 +108,7 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -118,7 +118,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const trackId = params.id
+    const { id: trackId } = await params
     const body = await request.json()
     const validatedData = updateTrackSchema.parse(body)
 
@@ -206,7 +206,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -216,7 +216,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const trackId = params.id
+    const { id: trackId } = await params
 
     // Verify user owns the track
     const existingTrack = await prisma.track.findFirst({

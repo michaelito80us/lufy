@@ -6,12 +6,12 @@ import { z } from 'zod'
 const prisma = new PrismaClient()
 
 const updateSubscriptionSchema = z.object({
-  status: z.enum(['ACTIVE', 'INACTIVE', 'CANCELLED']).optional(),
+  status: z.enum(['ACTIVE', 'PAUSED', 'CANCELLED']).optional(),
 })
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -21,7 +21,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const subscriptionId = params.id
+    const { id: subscriptionId } = await params
 
     const subscription = await prisma.subscription.findFirst({
       where: {
@@ -60,7 +60,7 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -70,7 +70,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const subscriptionId = params.id
+    const { id: subscriptionId } = await params
     const body = await request.json()
     const { status } = updateSubscriptionSchema.parse(body)
 
@@ -137,7 +137,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -147,7 +147,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const subscriptionId = params.id
+    const { id: subscriptionId } = await params
 
     // Verify user owns the subscription
     const existingSubscription = await prisma.subscription.findFirst({

@@ -75,12 +75,12 @@ const Pricing: React.FC<PricingProps> = ({ className }) => {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16 animate-fade-in">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-4 sm:mb-6 px-2">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-display font-bold mb-4 sm:mb-6 px-2">
             <span className="bg-gradient-to-r from-neon-pink to-neon-blue bg-clip-text text-transparent">
               Choose Your Plan
             </span>
           </h2>
-          <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto px-4">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto px-4">
             Start free and scale as you grow. No hidden fees, cancel anytime.
           </p>
         </div>

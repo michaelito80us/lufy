@@ -85,12 +85,12 @@ const Features: React.FC<FeaturesProps> = ({ className }) => {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-display font-bold mb-6">
             <span className="bg-gradient-to-r from-neon-pink to-neon-blue bg-clip-text text-transparent">
               Everything You Need
             </span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto">
             Professional tools designed for modern artists who want to build,
             engage, and monetize their fanbase
           </p>
@@ -110,11 +110,13 @@ const Features: React.FC<FeaturesProps> = ({ className }) => {
                 size="lg"
                 className="mb-6"
               />
-              <h3 className="text-2xl font-bold mb-4 text-white">
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 text-white">
                 {feature.title}
               </h3>
-              <p className="text-gray-300 mb-6">{feature.description}</p>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <p className="text-sm sm:text-base text-gray-300 mb-6">
+                {feature.description}
+              </p>
+              <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
                 {feature.items.map((item, itemIndex) => (
                   <li key={itemIndex} className="flex items-center">
                     <i
