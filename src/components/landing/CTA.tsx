@@ -14,6 +14,10 @@ const CTA: React.FC<CTAProps> = ({ className }) => {
     e.preventDefault()
     // Handle email submission here
     console.log('Email submitted:', email)
+    if (email) {
+      // Redirect to /auth/login?email=...
+      window.location.href = `/auth/login?email=${encodeURIComponent(email)}`
+    }
     setEmail('')
   }
 

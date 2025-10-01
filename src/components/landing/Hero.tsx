@@ -11,7 +11,7 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
   return (
     <div className={`${className || ''}`}>
       {/* Main Hero Text */}
-      <div className="animate-slide-in">
+      <div className="animate-slideIn">
         <div className="mb-8">
           <span className="inline-block px-4 py-2 bg-gradient-to-r from-neon-pink/20 to-neon-blue/20 border border-white/20 rounded-full text-sm text-gray-300">
             ✨ The Future of Music Platforms
@@ -40,9 +40,11 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <Button variant="primary" size="lg" className="shadow-2xl">
-            Start Building Free
-          </Button>
+          <a href="/auth/login">
+            <Button variant="primary" size="lg" className="shadow-2xl">
+              Start Building Free
+            </Button>
+          </a>
           <Button
             variant="secondary"
             size="lg"

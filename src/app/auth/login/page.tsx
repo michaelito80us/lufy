@@ -73,7 +73,7 @@ export default function LoginPage() {
               <button
                 onClick={() => handleSocialSignIn('google')}
                 disabled={isSocialLoading}
-                className="social-btn w-full flex items-center justify-center space-x-3 py-3 glass-card rounded-xl border border-white/10 hover:border-neon-pink/30 transition-all duration-300 disabled:opacity-50"
+                className="social-btn google disabled:opacity-50"
               >
                 {isSocialLoading ? (
                   <>

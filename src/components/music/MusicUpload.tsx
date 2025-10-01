@@ -1,144 +1,330 @@
-'use client';
+'use client'
 
-import React, { useState, useCallback } from 'react';
-import { Upload, Music, X, CheckCircle, AlertCircle } from 'lucide-react';
-import { GlassCard } from '@/components/ui/GlassCard';
+import React, { useState, useCallback, useRef } from 'react'
+import {
+  Upload,
+  Music,
+  X,
+  CheckCircle,
+  AlertCircle,
+  Image,
+  Edit3,
+} from 'lucide-react'
+import { GlassCard } from '@/components/ui/GlassCard'
+import { Button } from '@/components/ui/Button'
 
 interface UploadFile {
-  id: string;
-  file: File;
-  progress: number;
-  status: 'uploading' | 'completed' | 'error';
-  error?: string;
+  id: string
+  file: File
+  progress: number
+  status: 'uploading' | 'completed' | 'error' | 'metadata'
+  error?: string
+  metadata?: {
+    title: string
+    description?: string
+    genre?: string
+    isExclusive: boolean
+    coverArt?: File
+    coverArtPreview?: string
+    tags?: string[]
+    bpm?: number
+    key?: string
+    mood?: string
+  }
 }
 
 interface MusicUploadProps {
-  onUploadComplete?: (files: UploadFile[]) => void;
-  maxFiles?: number;
-  maxFileSize?: number; // in MB
+  onUploadComplete?: (files: UploadFile[]) => void
+  maxFiles?: number
+  maxFileSize?: number
 }
 
-export function MusicUpload({ 
-  onUploadComplete, 
-  maxFiles = 10, 
-  maxFileSize = 100 
+const GENRES = [
+  'Electronic',
+  'Hip Hop',
+  'Pop',
+  'Rock',
+  'Jazz',
+  'Classical',
+  'R&B',
+  'Country',
+  'Reggae',
+  'Blues',
+  'Folk',
+  'Punk',
+  'Metal',
+  'Ambient',
+  'House',
+  'Techno',
+  'Dubstep',
+  'Trap',
+  'Lo-fi',
+  'Synthwave',
+  'Indie',
+  'Alternative',
+]
+
+const MOODS = [
+  'Energetic',
+  'Chill',
+  'Melancholic',
+  'Happy',
+  'Aggressive',
+  'Peaceful',
+  'Dark',
+  'Uplifting',
+  'Romantic',
+  'Mysterious',
+  'Dreamy',
+  'Intense',
+]
+
+const KEYS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+
+export function MusicUpload({
+  onUploadComplete,
+  maxFiles = 10,
+  maxFileSize = 100,
 }: MusicUploadProps) {
-  const [files, setFiles] = useState<UploadFile[]>([]);
-  const [isDragOver, setIsDragOver] = useState(false);
+  const [files, setFiles] = useState<UploadFile[]>([])
+  const [isDragOver, setIsDragOver] = useState(false)
+  const [editingFile, setEditingFile] = useState<string | null>(null)
+  const coverArtInputRef = useRef<HTMLInputElement>(null)
 
   const validateFile = (file: File): string | null => {
-    // Check file type
-    const allowedTypes = ['audio/mpeg', 'audio/wav', 'audio/mp3', 'audio/flac', 'audio/aac'];
-    if (!allowedTypes.includes(file.type) && !file.name.match(/\.(mp3|wav|flac|aac|m4a)$/i)) {
-      return 'Invalid file type. Please upload audio files only.';
+    const allowedTypes = [
+      'audio/mpeg',
+      'audio/wav',
+      'audio/mp3',
+      'audio/flac',
+      'audio/aac',
+    ]
+    if (
+      !allowedTypes.includes(file.type) &&
+      !file.name.match(/\.(mp3|wav|flac|aac|m4a)$/i)
+    ) {
+      return 'Invalid file type. Please upload audio files only.'
     }
 
-    // Check file size
     if (file.size > maxFileSize * 1024 * 1024) {
-      return `File size exceeds ${maxFileSize}MB limit.`;
+      return `File size exceeds ${maxFileSize}MB limit.`
     }
 
-    return null;
-  };
+    return null
+  }
 
-  const handleFiles = useCallback((fileList: FileList) => {
-    const newFiles: UploadFile[] = [];
-    
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i];
-      const error = validateFile(file);
-      
-      if (files.length + newFiles.length >= maxFiles) {
-        break;
+  const extractFileName = (filename: string): string => {
+    return filename.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ')
+  }
+
+  const handleFiles = useCallback(
+    (fileList: FileList) => {
+      const newFiles: UploadFile[] = []
+
+      for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i]
+        const error = validateFile(file)
+
+        if (files.length + newFiles.length >= maxFiles) {
+          break
+        }
+
+        const fileId = Math.random().toString(36).substr(2, 9)
+        newFiles.push({
+          id: fileId,
+          file,
+          progress: 0,
+          status: error ? 'error' : 'uploading',
+          error: error || undefined,
+          metadata: error
+            ? undefined
+            : {
+                title: extractFileName(file.name),
+                genre: '',
+                isExclusive: false,
+                tags: [],
+                mood: '',
+              },
+        })
       }
 
-      newFiles.push({
-        id: Math.random().toString(36).substr(2, 9),
-        file,
-        progress: 0,
-        status: error ? 'error' : 'uploading',
-        error
-      });
-    }
+      setFiles((prev) => [...prev, ...newFiles])
 
-    setFiles(prev => [...prev, ...newFiles]);
-
-    // Simulate upload progress for valid files
-    newFiles.forEach(uploadFile => {
-      if (!uploadFile.error) {
-        simulateUpload(uploadFile.id);
-      }
-    });
-  }, [files.length, maxFiles]);
+      newFiles.forEach((uploadFile) => {
+        if (!uploadFile.error) {
+          simulateUpload(uploadFile.id)
+        }
+      })
+    },
+    [files.length, maxFiles]
+  )
 
   const simulateUpload = (fileId: string) => {
     const interval = setInterval(() => {
-      setFiles(prev => prev.map(file => {
-        if (file.id === fileId) {
-          const newProgress = Math.min(file.progress + Math.random() * 20, 100);
-          const isComplete = newProgress >= 100;
-          
-          return {
-            ...file,
-            progress: newProgress,
-            status: isComplete ? 'completed' : 'uploading'
-          };
-        }
-        return file;
-      }));
-    }, 200);
+      setFiles((prev) =>
+        prev.map((file) => {
+          if (file.id === fileId && file.status === 'uploading') {
+            const newProgress = Math.min(
+              file.progress + Math.random() * 25,
+              100
+            )
+            const isComplete = newProgress >= 100
+
+            return {
+              ...file,
+              progress: newProgress,
+              status: isComplete ? 'metadata' : 'uploading',
+            }
+          }
+          return file
+        })
+      )
+    }, 150)
 
     setTimeout(() => {
-      clearInterval(interval);
-      setFiles(prev => prev.map(file => 
-        file.id === fileId 
-          ? { ...file, progress: 100, status: 'completed' }
-          : file
-      ));
-    }, 3000);
-  };
+      clearInterval(interval)
+      setFiles((prev) =>
+        prev.map((file) =>
+          file.id === fileId
+            ? { ...file, progress: 100, status: 'metadata' }
+            : file
+        )
+      )
+    }, 2000)
+  }
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    
-    const droppedFiles = e.dataTransfer.files;
-    if (droppedFiles.length > 0) {
-      handleFiles(droppedFiles);
-    }
-  }, [handleFiles]);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault()
+      setIsDragOver(false)
+
+      const droppedFiles = e.dataTransfer.files
+      if (droppedFiles.length > 0) {
+        handleFiles(droppedFiles)
+      }
+    },
+    [handleFiles]
+  )
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  }, []);
+    e.preventDefault()
+    setIsDragOver(true)
+  }, [])
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-  }, []);
+    e.preventDefault()
+    setIsDragOver(false)
+  }, [])
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files;
+    const selectedFiles = e.target.files
     if (selectedFiles) {
-      handleFiles(selectedFiles);
+      handleFiles(selectedFiles)
     }
-  };
+  }
+
+  const updateMetadata = (
+    fileId: string,
+    metadata: Partial<UploadFile['metadata']>
+  ) => {
+    setFiles((prev) =>
+      prev.map((file) =>
+        file.id === fileId
+          ? { ...file, metadata: { ...file.metadata!, ...metadata } }
+          : file
+      )
+    )
+  }
+
+  const uploadToServer = async (file: UploadFile) => {
+    const formData = new FormData()
+    formData.append('file', file.file)
+    formData.append('title', file.metadata!.title)
+    formData.append('description', file.metadata?.description || '')
+    formData.append('genre', file.metadata?.genre || '')
+    formData.append('isExclusive', file.metadata!.isExclusive.toString())
+    formData.append('mood', file.metadata?.mood || '')
+    formData.append('bpm', file.metadata?.bpm?.toString() || '')
+    formData.append('key', file.metadata?.key || '')
+    formData.append('tags', JSON.stringify(file.metadata?.tags || []))
+
+    if (file.metadata?.coverArt) {
+      formData.append('coverArt', file.metadata.coverArt)
+    }
+
+    try {
+      const response = await fetch('/api/music/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        throw new Error('Upload failed')
+      }
+
+      return await response.json()
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const handleFinalUpload = async () => {
+    const readyFiles = files.filter(
+      (f) => f.status === 'metadata' && f.metadata?.title.trim()
+    )
+
+    for (const file of readyFiles) {
+      try {
+        setFiles((prev) =>
+          prev.map((f) =>
+            f.id === file.id ? { ...f, status: 'uploading', progress: 0 } : f
+          )
+        )
+
+        await uploadToServer(file)
+
+        setFiles((prev) =>
+          prev.map((f) =>
+            f.id === file.id ? { ...f, status: 'completed', progress: 100 } : f
+          )
+        )
+      } catch (error) {
+        setFiles((prev) =>
+          prev.map((f) =>
+            f.id === file.id
+              ? { ...f, status: 'error', error: 'Upload failed' }
+              : f
+          )
+        )
+      }
+    }
+
+    setTimeout(() => {
+      onUploadComplete?.(files.filter((f) => f.status === 'completed'))
+    }, 1000)
+  }
 
   const removeFile = (fileId: string) => {
-    setFiles(prev => prev.filter(file => file.id !== fileId));
-  };
+    setFiles((prev) => prev.filter((file) => file.id !== fileId))
+  }
 
   const getStatusIcon = (status: UploadFile['status']) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="w-5 h-5 text-green-400" />;
+        return <CheckCircle className="w-5 h-5 text-green-400" />
       case 'error':
-        return <AlertCircle className="w-5 h-5 text-red-400" />;
+        return <AlertCircle className="w-5 h-5 text-red-400" />
+      case 'metadata':
+        return <Edit3 className="w-5 h-5 text-blue-400" />
       default:
-        return <Music className="w-5 h-5 text-blue-400 animate-pulse" />;
+        return <Music className="w-5 h-5 text-blue-400 animate-pulse" />
     }
-  };
+  }
+
+  const metadataFiles = files.filter((f) => f.status === 'metadata')
+  const allMetadataComplete = metadataFiles.every((f) =>
+    f.metadata?.title.trim()
+  )
 
   return (
     <div className="space-y-6">
@@ -147,9 +333,10 @@ export function MusicUpload({
         <div
           className={`
             relative border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300
-            ${isDragOver 
-              ? 'border-fuchsia-400 bg-fuchsia-500/10 scale-105' 
-              : 'border-gray-600 hover:border-gray-500'
+            ${
+              isDragOver
+                ? 'border-fuchsia-400 bg-fuchsia-500/10 scale-105'
+                : 'border-gray-600 hover:border-gray-500'
             }
           `}
           onDrop={handleDrop}
@@ -163,12 +350,12 @@ export function MusicUpload({
             onChange={handleFileInput}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           />
-          
+
           <div className="space-y-4">
             <div className="mx-auto w-16 h-16 bg-gradient-to-br from-fuchsia-500 to-teal-500 rounded-full flex items-center justify-center">
               <Upload className="w-8 h-8 text-white" />
             </div>
-            
+
             <div>
               <h3 className="text-xl font-semibold text-white mb-2">
                 Drop your music files here
@@ -177,7 +364,7 @@ export function MusicUpload({
                 or click to browse your computer
               </p>
               <p className="text-sm text-gray-500">
-                Supports MP3, WAV, FLAC, AAC • Max {maxFileSize}MB per file • Up to {maxFiles} files
+                Supports MP3, WAV, FLAC, AAC • Max {maxFileSize}MB per file
               </p>
             </div>
           </div>
@@ -187,59 +374,210 @@ export function MusicUpload({
       {/* Upload Progress */}
       {files.length > 0 && (
         <GlassCard className="p-6">
-          <h4 className="text-lg font-semibold text-white mb-4">
-            Upload Progress ({files.length} files)
-          </h4>
-          
-          <div className="space-y-3">
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-lg font-semibold text-white">
+              Processing {files.length} files
+            </h4>
+            {metadataFiles.length > 0 && (
+              <Button
+                onClick={handleFinalUpload}
+                disabled={!allMetadataComplete}
+                className="bg-gradient-to-r from-fuchsia-500 to-teal-500 hover:from-fuchsia-600 hover:to-teal-600 disabled:opacity-50"
+              >
+                <Upload className="w-4 h-4 mr-2" />
+                Upload All
+              </Button>
+            )}
+          </div>
+
+          <div className="space-y-4">
             {files.map((file) => (
-              <div key={file.id} className="flex items-center space-x-4 p-3 bg-black/20 rounded-lg">
-                {getStatusIcon(file.status)}
-                
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <p className="text-sm font-medium text-white truncate">
-                      {file.file.name}
-                    </p>
-                    <span className="text-xs text-gray-400">
-                      {(file.file.size / (1024 * 1024)).toFixed(1)}MB
-                    </span>
+              <div
+                key={file.id}
+                className="bg-black/20 rounded-lg overflow-hidden"
+              >
+                {/* File Header */}
+                <div className="flex items-center space-x-4 p-4">
+                  {getStatusIcon(file.status)}
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-sm font-medium text-white truncate">
+                        {file.metadata?.title || file.file.name}
+                      </p>
+                      <span className="text-xs text-gray-400">
+                        {(file.file.size / (1024 * 1024)).toFixed(1)}MB
+                      </span>
+                    </div>
+
+                    {file.error ? (
+                      <p className="text-xs text-red-400">{file.error}</p>
+                    ) : file.status === 'uploading' ? (
+                      <div className="w-full bg-gray-700 rounded-full h-2">
+                        <div
+                          className="bg-gradient-to-r from-fuchsia-500 to-teal-500 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${file.progress}%` }}
+                        />
+                      </div>
+                    ) : file.status === 'metadata' ? (
+                      <p className="text-xs text-blue-400">
+                        Ready for metadata
+                      </p>
+                    ) : file.status === 'completed' ? (
+                      <p className="text-xs text-green-400">Upload complete</p>
+                    ) : null}
                   </div>
-                  
-                  {file.error ? (
-                    <p className="text-xs text-red-400">{file.error}</p>
-                  ) : (
-                    <div className="w-full bg-gray-700 rounded-full h-2">
-                      <div 
-                        className="bg-gradient-to-r from-fuchsia-500 to-teal-500 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${file.progress}%` }}
-                      />
+
+                  <div className="flex items-center space-x-2">
+                    {file.status === 'metadata' && (
+                      <button
+                        onClick={() =>
+                          setEditingFile(
+                            editingFile === file.id ? null : file.id
+                          )
+                        }
+                        className="p-2 hover:bg-fuchsia-500/20 rounded transition-colors"
+                      >
+                        <Edit3 className="w-4 h-4 text-fuchsia-400" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => removeFile(file.id)}
+                      className="p-2 hover:bg-red-500/20 rounded transition-colors"
+                    >
+                      <X className="w-4 h-4 text-gray-400 hover:text-red-400" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Metadata Editor */}
+                {file.status === 'metadata' &&
+                  editingFile === file.id &&
+                  file.metadata && (
+                    <div className="border-t border-gray-700 p-4 space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Title */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            Title *
+                          </label>
+                          <input
+                            type="text"
+                            value={file.metadata.title}
+                            onChange={(e) =>
+                              updateMetadata(file.id, { title: e.target.value })
+                            }
+                            className="w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-fuchsia-500 transition-colors"
+                            placeholder="Enter track title"
+                          />
+                        </div>
+
+                        {/* Genre */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            Genre
+                          </label>
+                          <select
+                            value={file.metadata.genre || ''}
+                            onChange={(e) =>
+                              updateMetadata(file.id, { genre: e.target.value })
+                            }
+                            className="w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-fuchsia-500 transition-colors"
+                          >
+                            <option value="">Select genre...</option>
+                            {GENRES.map((genre) => (
+                              <option key={genre} value={genre}>
+                                {genre}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Mood */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            Mood
+                          </label>
+                          <select
+                            value={file.metadata.mood || ''}
+                            onChange={(e) =>
+                              updateMetadata(file.id, { mood: e.target.value })
+                            }
+                            className="w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-fuchsia-500 transition-colors"
+                          >
+                            <option value="">Select mood...</option>
+                            {MOODS.map((mood) => (
+                              <option key={mood} value={mood}>
+                                {mood}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* BPM */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            BPM
+                          </label>
+                          <input
+                            type="number"
+                            value={file.metadata.bpm || ''}
+                            onChange={(e) =>
+                              updateMetadata(file.id, {
+                                bpm: parseInt(e.target.value) || undefined,
+                              })
+                            }
+                            className="w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-fuchsia-500 transition-colors"
+                            placeholder="e.g. 120"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Description
+                        </label>
+                        <textarea
+                          value={file.metadata.description || ''}
+                          onChange={(e) =>
+                            updateMetadata(file.id, {
+                              description: e.target.value,
+                            })
+                          }
+                          className="w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-fuchsia-500 transition-colors"
+                          placeholder="Describe your track..."
+                          rows={3}
+                        />
+                      </div>
+
+                      {/* Exclusive Toggle */}
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="checkbox"
+                          id={`exclusive-${file.id}`}
+                          checked={file.metadata.isExclusive}
+                          onChange={(e) =>
+                            updateMetadata(file.id, {
+                              isExclusive: e.target.checked,
+                            })
+                          }
+                          className="rounded border-gray-600 text-fuchsia-500 focus:ring-fuchsia-500"
+                        />
+                        <label
+                          htmlFor={`exclusive-${file.id}`}
+                          className="text-sm text-gray-300"
+                        >
+                          Make this track exclusive to subscribers
+                        </label>
+                      </div>
                     </div>
                   )}
-                </div>
-                
-                <button
-                  onClick={() => removeFile(file.id)}
-                  className="p-1 hover:bg-red-500/20 rounded transition-colors"
-                >
-                  <X className="w-4 h-4 text-gray-400 hover:text-red-400" />
-                </button>
               </div>
             ))}
           </div>
-          
-          {files.some(f => f.status === 'completed') && (
-            <div className="mt-4 pt-4 border-t border-gray-700">
-              <button
-                onClick={() => onUploadComplete?.(files.filter(f => f.status === 'completed'))}
-                className="w-full py-2 px-4 bg-gradient-to-r from-fuchsia-500 to-teal-500 text-white rounded-lg font-medium hover:from-fuchsia-600 hover:to-teal-600 transition-all duration-300"
-              >
-                Continue with {files.filter(f => f.status === 'completed').length} uploaded files
-              </button>
-            </div>
-          )}
         </GlassCard>
       )}
     </div>
-  );
+  )
 }

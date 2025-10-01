@@ -1,121 +1,141 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import { Lock, Crown, Heart, Star, Music } from 'lucide-react';
-import { useSession } from '@/lib/auth-client';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { toast } from 'sonner';
+import React, { useState, useEffect } from 'react'
+import { Lock, Crown, Heart, Star, Music } from 'lucide-react'
+import { authClient } from '@/lib/auth-client'
+import { Button } from '@/components/ui/Button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { toast } from 'sonner'
 
 interface Artist {
-  id: string;
-  stageName: string;
-  logo?: string;
-  subscriptionPrice: number;
-  tier: 'EMERGING' | 'RISING' | 'ESTABLISHED' | 'SUPERSTAR';
+  id: string
+  stageName: string
+  logo?: string
+  subscriptionPrice: number
+  tier: 'EMERGING' | 'RISING' | 'ESTABLISHED' | 'SUPERSTAR'
 }
 
 interface SubscriptionGateProps {
-  artist: Artist;
-  isExclusive: boolean;
-  children: React.ReactNode;
-  trackTitle?: string;
-  onSubscribe?: () => void;
+  artist: Artist
+  isExclusive: boolean
+  children: React.ReactNode
+  trackTitle?: string
+  onSubscribe?: () => void
 }
 
 interface Subscription {
-  id: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'CANCELLED';
-  expiresAt: string;
+  id: string
+  status: 'ACTIVE' | 'INACTIVE' | 'CANCELLED'
+  expiresAt: string
 }
 
 const tierColors = {
   EMERGING: 'bg-green-500/20 text-green-400 border-green-500/30',
   RISING: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   ESTABLISHED: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-  SUPERSTAR: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
-};
+  SUPERSTAR: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+}
 
 const tierIcons = {
   EMERGING: Star,
   RISING: Music,
   ESTABLISHED: Crown,
-  SUPERSTAR: Heart
-};
+  SUPERSTAR: Heart,
+}
 
 export default function SubscriptionGate({
   artist,
   isExclusive,
   children,
   trackTitle,
-  onSubscribe
+  onSubscribe,
 }: SubscriptionGateProps) {
-  const { data: session } = useSession();
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [subscribing, setSubscribing] = useState(false);
+  const [session, setSession] = useState<any>(null)
+
+  useEffect(() => {
+    const getSession = async () => {
+      try {
+        const sessionData = await authClient.getSession()
+        setSession(sessionData)
+      } catch (error) {
+        console.error('Error getting session:', error)
+      }
+    }
+    getSession()
+  }, [])
+  const [subscription, setSubscription] = useState<Subscription | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [subscribing, setSubscribing] = useState(false)
 
   useEffect(() => {
     if (session?.user && isExclusive) {
-      checkSubscription();
+      checkSubscription()
     } else {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [session, artist.id, isExclusive]);
+  }, [session, artist.id, isExclusive])
 
   const checkSubscription = async () => {
     try {
-      const response = await fetch(`/api/subscriptions/check?artistId=${artist.id}`);
+      const response = await fetch(
+        `/api/subscriptions/check?artistId=${artist.id}`
+      )
       if (response.ok) {
-        const data = await response.json();
-        setSubscription(data.subscription);
+        const data = await response.json()
+        setSubscription(data.subscription)
       }
     } catch (error) {
-      console.error('Error checking subscription:', error);
+      console.error('Error checking subscription:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleSubscribe = async () => {
     if (!session?.user) {
-      toast.error('Please sign in to subscribe');
-      return;
+      toast.error('Please sign in to subscribe')
+      return
     }
 
-    setSubscribing(true);
+    setSubscribing(true)
     try {
       const response = await fetch('/api/subscriptions', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          artistId: artist.id
-        })
-      });
+          artistId: artist.id,
+        }),
+      })
 
       if (response.ok) {
-        const data = await response.json();
-        setSubscription(data.subscription);
-        toast.success(`Successfully subscribed to ${artist.stageName}!`);
-        onSubscribe?.();
+        const data = await response.json()
+        setSubscription(data.subscription)
+        toast.success(`Successfully subscribed to ${artist.stageName}!`)
+        onSubscribe?.()
       } else {
-        const error = await response.json();
-        toast.error(error.message || 'Failed to subscribe');
+        const error = await response.json()
+        toast.error(error.message || 'Failed to subscribe')
       }
     } catch (error) {
-      console.error('Error subscribing:', error);
-      toast.error('Failed to subscribe. Please try again.');
+      console.error('Error subscribing:', error)
+      toast.error('Failed to subscribe. Please try again.')
     } finally {
-      setSubscribing(false);
+      setSubscribing(false)
     }
-  };
+  }
 
   // If not exclusive content, render children directly
   if (!isExclusive) {
-    return <>{children}</>;
+    return <>{children}</>
   }
 
   // If loading, show loading state
@@ -124,16 +144,16 @@ export default function SubscriptionGate({
       <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
       </div>
-    );
+    )
   }
 
   // If user has active subscription, render children
   if (subscription?.status === 'ACTIVE') {
-    return <>{children}</>;
+    return <>{children}</>
   }
 
   // If user is not subscribed, show subscription gate
-  const TierIcon = tierIcons[artist.tier];
+  const TierIcon = tierIcons[artist.tier]
 
   return (
     <div className="relative">
@@ -141,7 +161,7 @@ export default function SubscriptionGate({
       <div className="filter blur-sm pointer-events-none opacity-50">
         {children}
       </div>
-      
+
       {/* Subscription gate overlay */}
       <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm">
         <Card className="w-full max-w-md mx-4 bg-gray-900/95 border-gray-700 shadow-2xl">
@@ -164,16 +184,21 @@ export default function SubscriptionGate({
                 </div>
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <CardTitle className="text-xl text-white">
                 Exclusive Content
               </CardTitle>
               <CardDescription className="text-gray-300">
                 {trackTitle ? (
-                  <>This track "{trackTitle}" is exclusive to {artist.stageName} subscribers</>
+                  <>
+                    This track "{trackTitle}" is exclusive to {artist.stageName}{' '}
+                    subscribers
+                  </>
                 ) : (
-                  <>This content is exclusive to {artist.stageName} subscribers</>
+                  <>
+                    This content is exclusive to {artist.stageName} subscribers
+                  </>
                 )}
               </CardDescription>
             </div>
@@ -183,12 +208,14 @@ export default function SubscriptionGate({
               {artist.tier}
             </Badge>
           </CardHeader>
-          
+
           <CardContent className="space-y-4">
             <div className="text-center space-y-2">
               <div className="text-2xl font-bold text-white">
                 ${artist.subscriptionPrice}
-                <span className="text-sm text-gray-400 font-normal">/month</span>
+                <span className="text-sm text-gray-400 font-normal">
+                  /month
+                </span>
               </div>
               <p className="text-sm text-gray-400">
                 Get unlimited access to all exclusive content
@@ -229,12 +256,13 @@ export default function SubscriptionGate({
 
             {subscription?.status === 'CANCELLED' && (
               <p className="text-xs text-center text-yellow-400">
-                Your subscription was cancelled. Resubscribe to access exclusive content.
+                Your subscription was cancelled. Resubscribe to access exclusive
+                content.
               </p>
             )}
           </CardContent>
         </Card>
       </div>
     </div>
-  );
+  )
 }

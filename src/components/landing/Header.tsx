@@ -32,8 +32,8 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           <NavLink href="#pricing">Pricing</NavLink>
           <NavLink href="#demo">Demo</NavLink>
           <Link href="/auth/login">
-            <button className="px-6 py-2 bg-gradient-to-r from-neon-pink/20 to-neon-blue/20 border border-white/20 rounded-xl text-white hover:border-neon-pink/50 transition-all">
-              Sign In
+            <button className="px-6 py-2 bg-gradient-to-r from-neon-pink/25 to-neon-blue/25 border border-white/20 rounded-xl text-white hover:border-neon-pink/50 transition-all">
+              Continue
             </button>
           </Link>
         </nav>
